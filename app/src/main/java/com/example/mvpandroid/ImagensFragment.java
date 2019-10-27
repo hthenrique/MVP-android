@@ -62,7 +62,7 @@ class ImagensFragment extends Fragment implements ImagensContract.View {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), numColumns));
 
         SwipeRefreshLayout swipeRefreshLayout =
-                (SwipeRefreshLayout) root.findViewById(R.id.swiperefresh);
+                (SwipeRefreshLayout) root.findViewById(R.id.SwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.colorPrimary),
                 ContextCompat.getColor(getActivity(), R.color.colorAccent),
@@ -81,7 +81,7 @@ class ImagensFragment extends Fragment implements ImagensContract.View {
         if (getView() == null){
             return;
         }
-        final  SwipeRefreshLayout srl = (SwipeRefreshLayout) getView().findViewById(R.id.swiperefresh);
+        final  SwipeRefreshLayout srl = (SwipeRefreshLayout) getView().findViewById(R.id.SwipeRefresh);
 
         srl.post(new Runnable() {
             @Override
