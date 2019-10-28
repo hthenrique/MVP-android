@@ -1,4 +1,4 @@
-package com.example.mvpandroid;
+package com.example.mvpandroid.filmes;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,44 +16,46 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.mvpandroid.data.ImagensServiceImpl;
-import com.example.mvpandroid.data.model.Imagens;
+import com.example.mvpandroid.R;
+import com.example.mvpandroid.data.FilmeServiceImpl;
+import com.example.mvpandroid.data.model.Filme;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class ImagensFragment extends Fragment implements ImagensContract.View {
+public class FilmesFragment extends Fragment implements FilmesContract.View {
 
-    private ImagensContract.UserActionsListener mActionsListener;
+    private FilmesContract.UserActionsListener mActionsListener;
 
-    private ImagensAdapter mListAdapter;
+    private FilmesAdapter mListAdapter;
 
-    public  ImagensFragment(){
+    public FilmesFragment(){
     }
 
     public static Fragment newInstance() {
-        return new ImagensFragment();
+        return new FilmesFragment();
     }
 
     @Override
     public void onCreate(@NonNull Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        mListAdapter = new ImagensAdapter(new ArrayList<Imagens>(0), mItemListener);
-        mActionsListener = new ImagensPresenter(new ImagensServiceImpl(), this);
+        mListAdapter = new FilmesAdapter(new ArrayList<Filme>(0), mItemListener);
+        mActionsListener = new FilmesPresenter(new FilmeServiceImpl(), this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mActionsListener.carregarImagens();
+        mActionsListener.carregarFilmes();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.imagens_fragment, container, false);
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.imagens_list);
+        View root = inflater.inflate(R.layout.filmes_fragment, container, false);
+        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.filmes_list);
         recyclerView.setAdapter(mListAdapter);
 
         int numColumns = 1;
@@ -70,51 +72,53 @@ class ImagensFragment extends Fragment implements ImagensContract.View {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mActionsListener.carregarImagens();
+                mActionsListener.carregarFilmes();
             }
         });
         return root;
     }
 
     @Override
-    public void setCarregando(final boolean isAtivo) {
+    public void setCarregando(final boolean Ativo) {
         if (getView() == null){
             return;
         }
-        final  SwipeRefreshLayout srl = (SwipeRefreshLayout) getView().findViewById(R.id.SwipeRefresh);
+        final  SwipeRefreshLayout srl =
+                (SwipeRefreshLayout) getView().findViewById(R.id.SwipeRefresh);
 
         srl.post(new Runnable() {
             @Override
             public void run() {
-                srl.setRefreshing(isAtivo);
+                srl.setRefreshing(Ativo);
             }
         });
     }
 
     @Override
-    public void exibirImagens(List<Imagens> imagens) {
-        mListAdapter.replaceData(imagens);
+    public void exibirFilmes(List<Filme> filmes) {
+        mListAdapter.replaceData(filmes);
     }
 
     @Override
-    public void exibirDetalhesUI(String imagensId) {
+    public void exibirDetalhesUI(String filmeId) {
 
     }
 
     ItemListener mItemListener = new ItemListener(){
         @Override
-        public void onImagensClick(Imagens imagens){
-            mActionsListener.abrirDetalhes(imagens);
+        public void onFilmeClick(Filme filme) {
+            mActionsListener.abrirDetalhes(filme);
         }
+
     };
 
-    private static class ImagensAdapter extends RecyclerView.Adapter<ImagensAdapter.ViewHolder>{
+    private static class FilmesAdapter extends RecyclerView.Adapter<FilmesAdapter.ViewHolder>{
 
-        private List<Imagens> mImagens;
+        private List<Filme> mFilmes;
         private ItemListener mItemListener;
 
-        public ImagensAdapter(List<Imagens> imagens, ItemListener itemListener){
-            setList(imagens);
+        public FilmesAdapter(List<Filme> filmes, ItemListener itemListener){
+            setList(filmes);
             mItemListener = itemListener;
         }
 
@@ -124,41 +128,41 @@ class ImagensFragment extends Fragment implements ImagensContract.View {
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             Context context = parent.getContext();
             LayoutInflater inflater = LayoutInflater.from(context);
-            View noteView = inflater.inflate(R.layout.imagem_item, parent, false);
+            View noteView = inflater.inflate(R.layout.filme_item, parent, false);
 
             return new ViewHolder(noteView, mItemListener);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ImagensAdapter.ViewHolder holder, int position) {
-            Imagens imagens = mImagens.get(position);
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+            Filme filme = mFilmes.get(position);
 
-            Picasso.with(holder.thumbnail.getContext())
-                    .load(imagens.posterUrl)
+            Picasso.with(viewHolder.thumbnail.getContext())
+                    .load(filme.posterUrl)
                     .fit().centerCrop()
                     .placeholder(R.drawable.ic_insert_photo_black_48px)
-                    .into(holder.thumbnail);
+                    .into(viewHolder.thumbnail);
 
-            holder.titulo.setText(imagens.titulo);
+            viewHolder.titulo.setText(filme.titulo);
 
         }
 
-        public void replaceData(List<Imagens> notes){
+        public void replaceData(List<Filme> notes){
             setList(notes);
             notifyDataSetChanged();
         }
 
-        private void setList(List<Imagens> notes) {
-            mImagens = notes;
+        private void setList(List<Filme> notes) {
+            mFilmes = notes;
         }
 
         @Override
         public int getItemCount() {
-            return mImagens.size();
+            return mFilmes.size();
         }
 
-        public Imagens getItem(int position){
-            return mImagens.get(position);
+        public Filme getItem(int position){
+            return mFilmes.get(position);
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -170,22 +174,22 @@ class ImagensFragment extends Fragment implements ImagensContract.View {
             public ViewHolder(@NonNull View itemView, ItemListener listener) {
                 super(itemView);
                 mItemListener = listener;
-                titulo = (TextView) itemView.findViewById(R.id.imagem_titulo);
-                thumbnail = (ImageView) itemView.findViewById(R.id.imagem_thumbnail);
+                titulo = (TextView) itemView.findViewById(R.id.filme_titulo);
+                thumbnail = (ImageView) itemView.findViewById(R.id.filme_thumbnail);
                 itemView.setOnClickListener(this);
             }
 
             @Override
             public void onClick(View v) {
                 int position = getAdapterPosition();
-                Imagens imagens = getItem(position);
-                mItemListener.onImagensClick(imagens);
+                Filme filme = getItem(position);
+                mItemListener.onFilmeClick(filme);
             }
         }
     }
 
     public interface ItemListener{
-        void onImagensClick(Imagens clickedNote);
+        void onFilmeClick(Filme clickedNote);
     }
 
 }

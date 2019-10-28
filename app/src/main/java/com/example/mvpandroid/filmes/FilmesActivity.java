@@ -1,11 +1,9 @@
-package com.example.mvpandroid;
+package com.example.mvpandroid.filmes;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,25 +11,25 @@ import android.view.MenuInflater;
 import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.mvpandroid.R;
 
-    ArrayAdapter<String> adapter;
+public class FilmesActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        RecyclerView img = findViewById(R.id.imagens_list);
+        setContentView(R.layout.filmes_activity);
 
         if (null == savedInstanceState){
-            initFragment(ImagensFragment.newInstance());
+            initFragment(FilmesFragment.newInstance());
         }
 
     }
 
-    private void initFragment(Fragment imagensFragment){
+    private void initFragment(Fragment filmesFragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.content, imagensFragment);
+        transaction.add(R.id.content, filmesFragment);
         transaction.commit();
     }
 
@@ -46,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         .getActionView();
         mSearchView.setQueryHint("Pesquisa");
 
-        mSearchView.setOnQueryTextListener((SearchView.OnQueryTextListener) this);
+        //mSearchView.setOnQueryTextListener((SearchView.OnQueryTextListener) this);
 
         return true;
     }
