@@ -1,19 +1,25 @@
 package com.example.mvpandroid.filmes;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 
 import com.example.mvpandroid.R;
 
 public class FilmesActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +29,7 @@ public class FilmesActivity extends AppCompatActivity {
         if (null == savedInstanceState){
             initFragment(FilmesFragment.newInstance());
         }
+
 
     }
 
@@ -39,12 +46,22 @@ public class FilmesActivity extends AppCompatActivity {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
+        MenuItem item = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView)item.getActionView();
 
-        SearchView mSearchView = (SearchView) menu.findItem(R.id.search)
-        .getActionView();
-        mSearchView.setQueryHint("Pesquisa");
+        searchView.setQueryHint("Pesquisa");
 
-        //mSearchView.setOnQueryTextListener((SearchView.OnQueryTextListener) this);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         return true;
     }

@@ -14,6 +14,8 @@ public class FilmeServiceImpl implements FilmeServiceApi {
 
     private SearchView searchView;
 
+
+
     public FilmeServiceImpl(SearchView searchView){
         this.searchView = searchView;
         mRetrofit = RetrofitClient.getClient().create(RetrofitEndpoint.class);
@@ -25,7 +27,7 @@ public class FilmeServiceImpl implements FilmeServiceApi {
 
     @Override
     public void getFilmes(final FilmeServiceCallback<FilmeResultadoBusca> callback) {
-        Call<FilmeResultadoBusca> callImagens = mRetrofit.busca("star wars","json");
+        Call<FilmeResultadoBusca> callImagens = mRetrofit.busca("Avengers","json");
         callImagens.enqueue(new Callback<FilmeResultadoBusca>() {
             @Override
             public void onResponse(Call<FilmeResultadoBusca> call, Response<FilmeResultadoBusca> response) {

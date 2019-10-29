@@ -11,7 +11,7 @@ public class Filme {
         public String titulo;
 
         @SerializedName("Ano")
-        public String likes;
+        public String ano;
 
         @SerializedName("Poster")
         public String posterUrl;
@@ -23,7 +23,7 @@ public class Filme {
         public Filme(String id, String titulo, String ano, String posterUrl){
             this.id = id;
             this.titulo = titulo;
-            this.likes = ano;
+            this.ano = ano;
             this.posterUrl = posterUrl;
         }
 
