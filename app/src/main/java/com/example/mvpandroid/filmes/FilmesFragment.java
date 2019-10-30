@@ -34,7 +34,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     public FilmesFragment(){
     }
 
-    public static Fragment newInstance() {
+    public Fragment newInstance() {
         return new FilmesFragment();
     }
 
@@ -192,4 +192,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         void onFilmeClick(Filme clickedNote);
     }
 
+    public void filter(String filter) {
+        mActionsListener.filtrarFilmes(filter);
+    }
 }

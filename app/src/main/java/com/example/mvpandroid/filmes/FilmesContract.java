@@ -21,6 +21,8 @@ public interface FilmesContract {
         void carregarFilmes();
 
         void abrirDetalhes(@NonNull Filme filme);
+
+        void filtrarFilmes(String filter);
     }
 
 }

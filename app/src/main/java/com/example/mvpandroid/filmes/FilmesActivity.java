@@ -10,6 +10,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +21,8 @@ import com.example.mvpandroid.R;
 
 public class FilmesActivity extends AppCompatActivity {
 
+    private static final String TAG = "FilmesActivity";
+    private FilmesFragment filmesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +30,8 @@ public class FilmesActivity extends AppCompatActivity {
         setContentView(R.layout.filmes_activity);
 
         if (null == savedInstanceState){
-            initFragment(FilmesFragment.newInstance());
+            filmesFragment = new FilmesFragment();
+            initFragment(filmesFragment);
         }
 
 
@@ -47,13 +51,15 @@ public class FilmesActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         MenuItem item = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView)item.getActionView();
 
+        SearchView searchView = (SearchView)item.getActionView();
         searchView.setQueryHint("Pesquisa");
+
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                filmesFragment.filter(query);
                 return true;
             }
 
