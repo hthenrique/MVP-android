@@ -144,6 +144,8 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                     .into(viewHolder.thumbnail);
 
             viewHolder.titulo.setText(filme.titulo);
+            viewHolder.ano.setText(filme.ano);
+            viewHolder.diretor.setText(filme.diretor);
 
         }
 
@@ -169,6 +171,8 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
 
             public ImageView thumbnail;
             public TextView titulo;
+            public TextView ano;
+            public TextView diretor;
             private ItemListener mItemListener;
 
             public ViewHolder(@NonNull View itemView, ItemListener listener) {
@@ -176,6 +180,8 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                 mItemListener = listener;
                 titulo = (TextView) itemView.findViewById(R.id.filme_titulo);
                 thumbnail = (ImageView) itemView.findViewById(R.id.filme_thumbnail);
+                ano = (TextView) itemView.findViewById(R.id.filme_ano);
+                diretor = (TextView) itemView.findViewById(R.id.filme_diretor);
                 itemView.setOnClickListener(this);
             }
 

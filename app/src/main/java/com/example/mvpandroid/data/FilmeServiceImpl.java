@@ -39,7 +39,7 @@ public class FilmeServiceImpl implements FilmeServiceApi {
 
     @Override
     public void getFilmes(final FilmeServiceCallback<FilmeResultadoBusca> callback) {
-        Call<FilmeResultadoBusca> callFilmes = mRetrofit.busca("2019","json");
+        Call<FilmeResultadoBusca> callFilmes = mRetrofit.busca("Spider-man","json");
         callFilmes.enqueue(new Callback<FilmeResultadoBusca>() {
             @Override
             public void onResponse(Call<FilmeResultadoBusca> call, Response<FilmeResultadoBusca> response) {
@@ -55,28 +55,6 @@ public class FilmeServiceImpl implements FilmeServiceApi {
             }
         });
     }
-
-    /*@Override
-    public void getFilme(FilmeServiceCallback<FilmeResultadoBusca> filmeResultadoBuscaFilmeServiceCallback) {
-        Call<FilmeResultadoBusca> callFilmes = mRetrofit.busca("2019","json");
-        callFilmes.enqueue(new Callback<FilmeResultadoBusca>() {
-            @Override
-            public void onResponse(Call<FilmeResultadoBusca> call, Response<FilmeResultadoBusca> response) {
-                if (response.code()==200){
-                    FilmeResultadoBusca resultadoBusca = response.body();
-
-                    Filme resultFilme = new Filme();
-                    resultFilme.titulo = resultadoBusca.filmes.get(0).titulo;
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<FilmeResultadoBusca> call, Throwable t) {
-
-            }
-        });
-    }*/
 
     @Override
     public void getFilme(final String filmeId,final FilmeServiceCallback<Filme> callBack) {
