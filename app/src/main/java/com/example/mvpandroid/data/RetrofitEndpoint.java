@@ -1,7 +1,5 @@
 package com.example.mvpandroid.data;
 
-import android.widget.SearchView;
-
 import com.example.mvpandroid.data.model.FilmeResultadoBusca;
 
 import retrofit2.Call;

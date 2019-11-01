@@ -2,6 +2,7 @@ package com.example.mvpandroid.data;
 
 
 import com.example.mvpandroid.data.model.Filme;
+import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.data.model.FilmeResultadoBusca;
 
 public interface FilmeServiceApi {
@@ -17,4 +18,6 @@ public interface FilmeServiceApi {
     void getFilmes(FilmeServiceCallback<FilmeResultadoBusca> callback);
 
     void getFilme(String filmeId, FilmeServiceCallback<Filme> callback);
+
+    void getFilmeDt(String title, FilmeServiceCallback<FilmeDetalhes> callback);
 }

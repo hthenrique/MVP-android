@@ -14,7 +14,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.SearchView;
 
 import com.example.mvpandroid.R;
@@ -23,6 +25,7 @@ public class FilmesActivity extends AppCompatActivity {
 
     private static final String TAG = "FilmesActivity";
     private FilmesFragment filmesFragment;
+    private static ImageView filme_thumbnail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +36,6 @@ public class FilmesActivity extends AppCompatActivity {
             filmesFragment = new FilmesFragment();
             initFragment(filmesFragment);
         }
-
-
     }
 
     private void initFragment(Fragment filmesFragment){

@@ -3,6 +3,7 @@ package com.example.mvpandroid.data;
 import android.widget.SearchView;
 
 import com.example.mvpandroid.data.model.Filme;
+import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.data.model.FilmeResultadoBusca;
 
 import retrofit2.Call;
@@ -78,4 +79,29 @@ public class FilmeServiceImpl implements FilmeServiceApi {
             }
         });
     }
+
+    @Override
+    public void getFilmeDt(String title, final FilmeServiceCallback<FilmeDetalhes> callback) {
+        Call<FilmeResultadoBusca> callFilmes = mRetrofit.busca(title, "json");
+        callFilmes.enqueue(new Callback<FilmeResultadoBusca>() {
+            @Override
+            public void onResponse(Call<FilmeResultadoBusca> call, Response<FilmeResultadoBusca> response) {
+                if (response.code()==200){
+                    FilmeResultadoBusca resultadoBusca = response.body();
+
+                    FilmeDetalhes resultFilme = new FilmeDetalhes();
+                    resultFilme.title = resultadoBusca.filmes.get(0).titulo;
+
+                    callback.onLoaded(resultFilme);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FilmeResultadoBusca> call, Throwable t) {
+
+            }
+        });
+    }
+
+
 }

@@ -1,11 +1,13 @@
 package com.example.mvpandroid.filmes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,8 @@ import com.example.mvpandroid.R;
 import com.example.mvpandroid.data.FilmeServiceImpl;
 import com.example.mvpandroid.data.model.Filme;
 
+import com.example.mvpandroid.data.model.FilmeDetalhes;
+import com.example.mvpandroid.detalhes.DetalhesActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -100,7 +104,16 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     }
 
     @Override
-    public void exibirDetalhesUI(String filmeId) {
+    public void exibirDetalhesUI(FilmeDetalhes filme) {
+
+        Intent intent = new Intent(getActivity().getApplicationContext(),DetalhesActivity.class);
+        intent.putExtra("Actors", filme.actors);
+        intent.putExtra("Title", filme.title);
+        intent.putExtra("Genre", filme.director);
+        intent.putExtra("Plot", filme.plot);
+        intent.putExtra("imdbID", filme.imdbid);
+        intent.putExtra("Runtime", filme.runtime);
+        getActivity().startActivity(intent);
 
     }
 
@@ -112,7 +125,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
 
     };
 
-    private static class FilmesAdapter extends RecyclerView.Adapter<FilmesAdapter.ViewHolder>{
+    private class FilmesAdapter extends RecyclerView.Adapter<FilmesAdapter.ViewHolder>{
 
         private List<Filme> mFilmes;
         private ItemListener mItemListener;
@@ -137,15 +150,32 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
             Filme filme = mFilmes.get(position);
 
+
             Picasso.with(viewHolder.thumbnail.getContext())
                     .load(filme.posterUrl)
                     .fit().centerCrop()
                     .placeholder(R.drawable.ic_insert_photo_black_48px)
                     .into(viewHolder.thumbnail);
 
+
+            viewHolder.thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), DetalhesActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            viewHolder.detalhes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), DetalhesActivity.class);
+                    startActivity(intent);
+                }
+            });
+
             viewHolder.titulo.setText(filme.titulo);
             viewHolder.ano.setText(filme.ano);
-            viewHolder.diretor.setText(filme.diretor);
 
         }
 
@@ -172,7 +202,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
             public ImageView thumbnail;
             public TextView titulo;
             public TextView ano;
-            public TextView diretor;
+            public RelativeLayout detalhes;
             private ItemListener mItemListener;
 
             public ViewHolder(@NonNull View itemView, ItemListener listener) {
@@ -181,7 +211,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                 titulo = (TextView) itemView.findViewById(R.id.filme_titulo);
                 thumbnail = (ImageView) itemView.findViewById(R.id.filme_thumbnail);
                 ano = (TextView) itemView.findViewById(R.id.filme_ano);
-                diretor = (TextView) itemView.findViewById(R.id.filme_diretor);
+                detalhes = (RelativeLayout) itemView.findViewById(R.id.detalhes);
                 itemView.setOnClickListener(this);
             }
 

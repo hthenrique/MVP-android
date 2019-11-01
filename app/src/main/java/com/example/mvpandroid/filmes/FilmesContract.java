@@ -3,6 +3,7 @@ package com.example.mvpandroid.filmes;
 import androidx.annotation.NonNull;
 
 import com.example.mvpandroid.data.model.Filme;
+import com.example.mvpandroid.data.model.FilmeDetalhes;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface FilmesContract {
 
         void exibirFilmes(List<Filme> filmes);
 
-        void exibirDetalhesUI (String filmesId);
+        void exibirDetalhesUI (FilmeDetalhes filme);
     }
 
     interface UserActionsListener{

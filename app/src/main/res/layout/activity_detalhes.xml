@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
+    android:background="@android:color/background_dark"
     android:orientation="vertical"
-    tools:context=".filmes.FilmesActivity">
+    tools:context=".detalhes.DetalhesActivity">
 
     <FrameLayout
-        android:id="@+id/content"
+        android:id="@+id/content2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:forceDarkAllowed="false" />
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 
 </LinearLayout>
