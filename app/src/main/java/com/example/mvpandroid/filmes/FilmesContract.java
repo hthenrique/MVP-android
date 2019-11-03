@@ -17,13 +17,23 @@ public interface FilmesContract {
         void exibirDetalhesUI (FilmeDetalhes filme);
     }
 
+    interface View2 {
+
+        void setCarregando(boolean isAtivo);
+
+        void exibirFilmes(List<FilmeDetalhes> filme);
+
+        void exibirDetalhesUI (FilmeDetalhes filme);
+
+    }
+
     interface UserActionsListener{
 
         void carregarFilmes();
 
         void abrirDetalhes(@NonNull Filme filme);
 
-        void filtrarFilmes(String filter);
+        void carregarFilmes(String query);
     }
 
 }

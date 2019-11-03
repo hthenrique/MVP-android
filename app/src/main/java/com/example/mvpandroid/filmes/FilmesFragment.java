@@ -21,7 +21,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.mvpandroid.R;
 import com.example.mvpandroid.data.FilmeServiceImpl;
 import com.example.mvpandroid.data.model.Filme;
-
 import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.detalhes.DetalhesActivity;
 import com.squareup.picasso.Picasso;
@@ -38,7 +37,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     public FilmesFragment(){
     }
 
-    public Fragment newInstance() {
+    public static Fragment newInstance() {
         return new FilmesFragment();
     }
 
@@ -59,7 +58,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.filmes_fragment, container, false);
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.filmes_list);
+        RecyclerView recyclerView = root.findViewById(R.id.filmes_list);
         recyclerView.setAdapter(mListAdapter);
 
         int numColumns = 1;
@@ -67,8 +66,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), numColumns));
 
-        SwipeRefreshLayout swipeRefreshLayout =
-                (SwipeRefreshLayout) root.findViewById(R.id.SwipeRefresh);
+        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.SwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.colorPrimary),
                 ContextCompat.getColor(getActivity(), R.color.colorAccent),
@@ -87,8 +85,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         if (getView() == null){
             return;
         }
-        final  SwipeRefreshLayout srl =
-                (SwipeRefreshLayout) getView().findViewById(R.id.SwipeRefresh);
+        final  SwipeRefreshLayout srl = getView().findViewById(R.id.SwipeRefresh);
 
         srl.post(new Runnable() {
             @Override
@@ -157,6 +154,8 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                     .placeholder(R.drawable.ic_insert_photo_black_48px)
                     .into(viewHolder.thumbnail);
 
+            viewHolder.titulo.setText(filme.titulo);
+            viewHolder.ano.setText(filme.ano);
 
             viewHolder.thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -173,10 +172,6 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                     startActivity(intent);
                 }
             });
-
-            viewHolder.titulo.setText(filme.titulo);
-            viewHolder.ano.setText(filme.ano);
-
         }
 
         public void replaceData(List<Filme> notes){
@@ -220,6 +215,8 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                 int position = getAdapterPosition();
                 Filme filme = getItem(position);
                 mItemListener.onFilmeClick(filme);
+                Intent intent = new Intent(getContext(), DetalhesActivity.class);
+                startActivity(intent);
             }
         }
     }
@@ -228,7 +225,4 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         void onFilmeClick(Filme clickedNote);
     }
 
-    public void filter(String filter) {
-        mActionsListener.filtrarFilmes(filter);
-    }
 }

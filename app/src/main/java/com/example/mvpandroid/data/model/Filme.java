@@ -20,13 +20,12 @@ public class Filme {
 
         }
 
-        /*public Filme(String id, String titulo, String ano, String diretor, String posterUrl){
+        public Filme(String id, String titulo, String ano, String posterUrl){
             this.id = id;
             this.titulo = titulo;
             this.ano = ano;
-            this.diretor = diretor;
             this.posterUrl = posterUrl;
-        }*/
+        }
 
     }
 

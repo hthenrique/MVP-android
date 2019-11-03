@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.example.mvpandroid.data.FilmeServiceApi;
 
 import com.example.mvpandroid.data.model.Filme;
+import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.data.model.FilmeResultadoBusca;
 
 public class FilmesPresenter implements FilmesContract.UserActionsListener {
@@ -34,17 +35,18 @@ public class FilmesPresenter implements FilmesContract.UserActionsListener {
     }
 
     @Override
-    public void abrirDetalhes(@NonNull Filme filme) {
-
-    }
-
-    @Override
-    public void filtrarFilmes(String filter) {
-        mApi.getFilme(filter, new FilmeServiceApi.FilmeServiceCallback<Filme>() {
+    public void abrirDetalhes(@NonNull final Filme filme) {
+        mApi.getFilme(filme.id, new FilmeServiceApi.FilmeServiceCallback<FilmeDetalhes>() {
             @Override
-            public void onLoaded(Filme filmes) {
-                Log.e(TAG, "onLoaded: " + filmes.titulo);
+            public void onLoaded(FilmeDetalhes filmes) {
+                mFilmesView.exibirDetalhesUI(filmes);
             }
         });
     }
+
+    @Override
+    public void carregarFilmes(String query) {
+
+    }
+
 }
