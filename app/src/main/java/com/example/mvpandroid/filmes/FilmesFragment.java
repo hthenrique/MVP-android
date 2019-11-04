@@ -1,5 +1,7 @@
 package com.example.mvpandroid.filmes;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -31,6 +34,8 @@ import java.util.List;
 public class FilmesFragment extends Fragment implements FilmesContract.View {
 
     private FilmesContract.UserActionsListener mActionsListener;
+
+    public static final String MOVIE_DETAIL = "movie_detail";
 
     private FilmesAdapter mListAdapter;
 
@@ -144,9 +149,8 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
             Filme filme = mFilmes.get(position);
-
 
             Picasso.with(viewHolder.thumbnail.getContext())
                     .load(filme.posterUrl)
@@ -161,8 +165,11 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getContext(), DetalhesActivity.class);
-                    startActivity(intent);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation
+                            (getActivity(),viewHolder.thumbnail,"poster");
+                    startActivity(intent, options.toBundle());
                 }
+
             });
 
             viewHolder.detalhes.setOnClickListener(new View.OnClickListener() {
