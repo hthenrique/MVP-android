@@ -1,5 +1,7 @@
 package com.example.mvpandroid.filmes;
 
+import android.content.Intent;
+
 import androidx.annotation.NonNull;
 
 import com.example.mvpandroid.data.model.Filme;
@@ -23,7 +25,7 @@ public interface FilmesContract {
 
         void abrirDetalhes(@NonNull Filme filme);
 
-        void filtrarFilmes(String filter);
+        void carregarFilmes(String FilmeNome);
     }
 
 }

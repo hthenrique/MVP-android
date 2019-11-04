@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.example.mvpandroid.data.FilmeServiceApi;
 
 import com.example.mvpandroid.data.model.Filme;
+import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.data.model.FilmeResultadoBusca;
 
 public class FilmesPresenter implements FilmesContract.UserActionsListener {
@@ -24,27 +25,29 @@ public class FilmesPresenter implements FilmesContract.UserActionsListener {
     public void carregarFilmes() {
         mFilmesView.setCarregando(true);
 
-        mApi.getFilmes(new FilmeServiceApi.FilmeServiceCallback<FilmeResultadoBusca>() {
-            @Override
-            public void onLoaded(FilmeResultadoBusca resultadoBusca) {
-                mFilmesView.setCarregando(false);
-                mFilmesView.exibirFilmes(resultadoBusca.filmes);
-            }
+        mApi.getFilmes(resultadoBusca -> {
+            mFilmesView.setCarregando(false);
+            mFilmesView.exibirFilmes(resultadoBusca.filmes);
         });
     }
 
-    @Override
-    public void abrirDetalhes(@NonNull Filme filme) {
 
+    @Override
+    public void abrirDetalhes(@NonNull final Filme filme) {
+        mApi.getFilme(filme.id, filmes -> mFilmesView.exibirDetalhesUI(filmes));
     }
 
     @Override
-    public void filtrarFilmes(String filter) {
-        mApi.getFilme(filter, new FilmeServiceApi.FilmeServiceCallback<Filme>() {
-            @Override
-            public void onLoaded(Filme filmes) {
-                Log.e(TAG, "onLoaded: " + filmes.titulo);
-            }
+    public void carregarFilmes(String FilmeNome) {
+        mFilmesView.setCarregando(true);
+        if (FilmeNome == null){
+            FilmeNome = "Spider-man";
+        }
+        mApi.getPesquisa(FilmeNome, resultadoBusca -> {
+            mFilmesView.setCarregando(false);
+            mFilmesView.exibirFilmes(resultadoBusca.filmes);
         });
+
     }
+
 }
