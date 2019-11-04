@@ -29,9 +29,9 @@ public class DetalhesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detalhes);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        setContentView(R.layout.activity_detalhes);
 
         filme_titulo = findViewById(R.id.filme_titulo);
         filme_ano = findViewById(R.id.filme_ano);
@@ -46,29 +46,9 @@ public class DetalhesActivity extends AppCompatActivity {
         if (extras != null){
             detalhes(extras);
         }else{
-            finish();
+            //finish();
         }
 
-        if (null == savedInstanceState){
-            initFragment(DetalhesFragment.newInstance());
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(DetalhesActivity.this, FilmesActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        }, 2000);
-
-    }
-
-    public void initFragment(Fragment detalhesFragment){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.content2, detalhesFragment);
-        transaction.commit();
     }
 
     private void detalhes(Bundle extras) {

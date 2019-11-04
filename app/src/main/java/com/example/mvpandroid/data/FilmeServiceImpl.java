@@ -54,9 +54,8 @@ public class FilmeServiceImpl implements FilmeServiceApi {
     }
 
     @Override
-    public void getPesquisa(String Filme, final FilmeServiceCallback<FilmeResultadoBusca> callback) {
-
-        Call<FilmeResultadoBusca> callFilme = mRetrofit.busca(Filme,"json");
+    public void getPesquisa(String FilmeNome, final FilmeServiceCallback<FilmeResultadoBusca> callback) {
+        Call<FilmeResultadoBusca> callFilme = mRetrofit.busca(FilmeNome,"json");
         callFilme.enqueue(new Callback<FilmeResultadoBusca>() {
             @Override
             public void onResponse(Call<FilmeResultadoBusca> call, Response<FilmeResultadoBusca> response) {

@@ -7,7 +7,6 @@ import java.util.List;
 public class FilmeResultadoBusca {
     @SerializedName("Search")
     public List<Filme> filmes;
-    public List<FilmeDetalhes> filme;
 
     public FilmeResultadoBusca(){}
 

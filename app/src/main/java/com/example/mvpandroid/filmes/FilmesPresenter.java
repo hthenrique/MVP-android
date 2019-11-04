@@ -25,27 +25,28 @@ public class FilmesPresenter implements FilmesContract.UserActionsListener {
     public void carregarFilmes() {
         mFilmesView.setCarregando(true);
 
-        mApi.getFilmes(new FilmeServiceApi.FilmeServiceCallback<FilmeResultadoBusca>() {
-            @Override
-            public void onLoaded(FilmeResultadoBusca resultadoBusca) {
-                mFilmesView.setCarregando(false);
-                mFilmesView.exibirFilmes(resultadoBusca.filmes);
-            }
+        mApi.getFilmes(resultadoBusca -> {
+            mFilmesView.setCarregando(false);
+            mFilmesView.exibirFilmes(resultadoBusca.filmes);
         });
     }
+
 
     @Override
     public void abrirDetalhes(@NonNull final Filme filme) {
-        mApi.getFilme(filme.id, new FilmeServiceApi.FilmeServiceCallback<FilmeDetalhes>() {
-            @Override
-            public void onLoaded(FilmeDetalhes filmes) {
-                mFilmesView.exibirDetalhesUI(filmes);
-            }
-        });
+        mApi.getFilme(filme.id, filmes -> mFilmesView.exibirDetalhesUI(filmes));
     }
 
     @Override
-    public void carregarFilmes(String query) {
+    public void carregarFilmes(String FilmeNome) {
+        mFilmesView.setCarregando(true);
+        if (FilmeNome == null){
+            FilmeNome = "Spider-man";
+        }
+        mApi.getPesquisa(FilmeNome, resultadoBusca -> {
+            mFilmesView.setCarregando(false);
+            mFilmesView.exibirFilmes(resultadoBusca.filmes);
+        });
 
     }
 

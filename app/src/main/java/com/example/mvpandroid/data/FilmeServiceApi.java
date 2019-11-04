@@ -14,6 +14,6 @@ public interface FilmeServiceApi {
 
     void getFilme(String filmeId, FilmeServiceCallback<FilmeDetalhes> callback);
 
-    void getPesquisa(String Filme, FilmeServiceCallback<FilmeResultadoBusca> callback);
+    void getPesquisa(String FilmeNome, FilmeServiceCallback<FilmeResultadoBusca> callback);
 
 }
