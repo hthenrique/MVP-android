@@ -21,6 +21,7 @@ import com.example.mvpandroid.data.FilmeServiceApi;
 import com.example.mvpandroid.data.FilmeServiceImpl;
 import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.filmes.FilmesContract;
+import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
 
@@ -66,6 +67,8 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
         String director = getActivity().getIntent().getExtras().getString("director");
         String plot = getActivity().getIntent().getExtras().getString("plot");
         String poster = getActivity().getIntent().getExtras().getString("poster");
+
+        Picasso.with(getContext()).load(poster).fit().into();
 
         filme_titulo = root.findViewById(R.id.filme_titulo);
         filme_titulo.setText(title);
