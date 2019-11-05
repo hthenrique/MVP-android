@@ -19,13 +19,6 @@ import com.squareup.picasso.Picasso;
 
 public class DetalhesActivity extends AppCompatActivity {
 
-    private TextView filme_titulo;
-    private TextView filme_ano;
-    private TextView filme_diretor;
-    private TextView filme_genero;
-    private TextView filme_sinope;
-    private ImageView filme_poster;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,35 +26,14 @@ public class DetalhesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        filme_titulo = findViewById(R.id.filme_titulo);
-        filme_ano = findViewById(R.id.filme_ano);
-        filme_diretor = findViewById(R.id.filme_diretor);
-        filme_genero = findViewById(R.id.filme_genero);
-        filme_sinope = findViewById(R.id.filme_sinopse);
-        filme_poster = findViewById(R.id.filme_poster);
-
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-
-        if (extras != null){
-            detalhes(extras);
-        }else{
-            //finish();
-        }
-
+        initFragment(DetalhesFragment.newInstance());
     }
 
-    private void detalhes(Bundle extras) {
-        Picasso.with(this)
-                .load(extras.getString("Poster"))
-                .fit().centerCrop()
-                .into(filme_poster);
-
-        filme_titulo.setText(extras.getString("Title"));
-        filme_ano.setText(extras.getString("Year"));
-        filme_diretor.setText(extras.getString("Director"));
-        filme_genero.setText(extras.getString("Genre"));
-        filme_sinope.setText(extras.getString("Plot"));
+    private void initFragment(Fragment detalhesFragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.content2, detalhesFragment);
+        transaction.commit();
     }
 
     @Override

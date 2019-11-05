@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.example.mvpandroid.data.FilmeServiceApi;
 
+import com.example.mvpandroid.data.FilmeServiceImpl;
 import com.example.mvpandroid.data.model.Filme;
 import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.data.model.FilmeResultadoBusca;
@@ -14,10 +15,8 @@ public class FilmesPresenter implements FilmesContract.UserActionsListener {
     private final FilmeServiceApi mApi;
     private final FilmesContract.View mFilmesView;
 
-    private static final String TAG = "FilmesPresenter";
-
-    public FilmesPresenter(FilmeServiceApi api, FilmesContract.View filmesView) {
-        mApi = api;
+    public FilmesPresenter(FilmesContract.View filmesView) {
+        mApi = new FilmeServiceImpl();
         mFilmesView = filmesView;
     }
 
@@ -33,8 +32,8 @@ public class FilmesPresenter implements FilmesContract.UserActionsListener {
 
 
     @Override
-    public void abrirDetalhes(@NonNull final Filme filme) {
-        mApi.getFilme(filme.id, filmes -> mFilmesView.exibirDetalhesUI(filmes));
+    public void abrirDetalhes(@NonNull Filme filme) {
+        mApi.getFilme(filme.id, filmes -> mFilmesView.exibirDetalhesUI(filmes.imdbid));
     }
 
     @Override

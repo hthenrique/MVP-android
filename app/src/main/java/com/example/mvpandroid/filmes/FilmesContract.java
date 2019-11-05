@@ -16,7 +16,7 @@ public interface FilmesContract {
 
         void exibirFilmes(List<Filme> filmes);
 
-        void exibirDetalhesUI (FilmeDetalhes filme);
+        void exibirDetalhesUI (String imdbId);
     }
 
     interface UserActionsListener{

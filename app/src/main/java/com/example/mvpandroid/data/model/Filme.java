@@ -20,12 +20,5 @@ public class Filme {
 
         }
 
-        public Filme(String id, String titulo, String ano, String posterUrl){
-            this.id = id;
-            this.titulo = titulo;
-            this.ano = ano;
-            this.posterUrl = posterUrl;
-        }
-
-    }
+}
 

@@ -1,7 +1,11 @@
 package com.example.mvpandroid.data;
 
+import android.widget.Toast;
+
 import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.data.model.FilmeResultadoBusca;
+import com.example.mvpandroid.detalhes.DetalhesActivity;
+import com.example.mvpandroid.detalhes.DetalhesFragment;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,8 +39,8 @@ public class FilmeServiceImpl implements FilmeServiceApi {
     }
 
     @Override
-    public void getFilme(String filmeId, final FilmeServiceCallback<FilmeDetalhes> callBack) {
-        Call<FilmeDetalhes> callFilme = mRetrofit.buscaDetalhes(filmeId,"json");
+    public void getFilme(String imdbId, final FilmeServiceCallback<FilmeDetalhes> callBack) {
+        Call<FilmeDetalhes> callFilme = mRetrofit.buscaDetalhes(imdbId,"json");
         callFilme.enqueue(new Callback<FilmeDetalhes>() {
             @Override
             public void onResponse(Call<FilmeDetalhes> call, Response<FilmeDetalhes> response) {
@@ -48,7 +52,7 @@ public class FilmeServiceImpl implements FilmeServiceApi {
 
             @Override
             public void onFailure(Call<FilmeDetalhes> call, Throwable t) {
-
+                Toast.makeText(new DetalhesActivity(), "werftg", Toast.LENGTH_SHORT).show();
             }
         });
     }

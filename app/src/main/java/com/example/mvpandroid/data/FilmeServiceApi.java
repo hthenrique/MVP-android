@@ -1,6 +1,7 @@
 package com.example.mvpandroid.data;
 
 
+import com.example.mvpandroid.data.model.Filme;
 import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.data.model.FilmeResultadoBusca;
 
