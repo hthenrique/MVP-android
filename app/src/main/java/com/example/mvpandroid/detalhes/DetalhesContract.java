@@ -9,7 +9,7 @@ public class DetalhesContract {
     }
 
     interface Presenter{
-        void carregarFilme(String imdbId);
+        void carregarFilme(String imdbid);
     }
 
     interface UserActionsListener {

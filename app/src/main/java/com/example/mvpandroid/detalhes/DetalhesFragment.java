@@ -22,15 +22,21 @@ import com.example.mvpandroid.data.FilmeServiceImpl;
 import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.filmes.FilmesContract;
 
-public class DetalhesFragment extends Fragment implements DetalhesContract.View {
+import retrofit2.Call;
 
-    private TextView filme_titulo;
+public class DetalhesFragment extends Fragment implements DetalhesContract.View {
 
     private DetalhesContract.Presenter presenter;
 
-    private String imdbId;
+    private String imdbid;
 
     private DetalhesContract.UserActionsListener mActionListener;
+
+    private TextView filme_titulo;
+    private TextView filme_ano;
+    private TextView filme_diretor;
+    private TextView filme_atores;
+    private TextView filme_sinopse;
 
     public DetalhesFragment(){
     }
@@ -46,45 +52,48 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
         setHasOptionsMenu(true);
         presenter = new DetalhesPresenter(this);
 
-        imdbId = getActivity().getIntent().getExtras().getString("imdbId");
-        presenter.carregarFilme(imdbId);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    /*@Nullable
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.detalhes_fragment, container, false);
 
+        String imdbid = getActivity().getIntent().getExtras().getString("imdbid");
+        String title = getActivity().getIntent().getExtras().getString("title");
+        String year = getActivity().getIntent().getExtras().getString("year");
+        String actors = getActivity().getIntent().getExtras().getString("actors");
+        String director = getActivity().getIntent().getExtras().getString("director");
+        String plot = getActivity().getIntent().getExtras().getString("plot");
+        String poster = getActivity().getIntent().getExtras().getString("poster");
 
-        //String poster = getActivity().getIntent().getExtras().getString("Poster");
-        *//*String actors = getActivity().getIntent().getExtras().getString("Actors");
-        String title = getActivity().getIntent().getExtras().getString("Title");
-        String director = getActivity().getIntent().getExtras().getString("Director");
-        String plot = getActivity().getIntent().getExtras().getString("Plot");
-        String imdbid = getActivity().getIntent().getExtras().getString("imdbID");
-        String runtime = getActivity().getIntent().getExtras().getString("Runtime");*//*
-
-        *//*TextView filme_titulo = root.findViewById(R.id.filme_titulo);
+        filme_titulo = root.findViewById(R.id.filme_titulo);
         filme_titulo.setText(title);
-        TextView filme_atores = root.findViewById(R.id.filme_atores);
+
+        filme_ano = root.findViewById(R.id.filme_ano);
+        filme_ano.setText(year);
+
+        filme_atores = root.findViewById(R.id.filme_atores);
         filme_atores.setText(actors);
-        TextView filme_diretor = root.findViewById(R.id.filme_diretor);
+
+        filme_diretor = root.findViewById(R.id.filme_diretor);
         filme_diretor.setText(director);
-        TextView filme_sinopse = root.findViewById(R.id.filme_sinopse);
-        filme_sinopse.setText(plot);*//*
+
+        filme_sinopse = root.findViewById(R.id.filme_sinopse);
+        filme_sinopse.setText(plot);
+
+        presenter.carregarFilme(imdbid);
 
         return root;
-    }*/
+    }
 
     @Override
     public void exibirDetalhes(FilmeDetalhes filmeDetalhes) {
-
-
+        filme_titulo.setText(filmeDetalhes.title);
+        filme_ano.setText(filmeDetalhes.year);
+        filme_atores.setText(filmeDetalhes.actors);
+        filme_diretor.setText(filmeDetalhes.director);
+        filme_sinopse.setText(filmeDetalhes.plot);
 
         Toast.makeText(getActivity(), filmeDetalhes.title, Toast.LENGTH_SHORT).show();
     }

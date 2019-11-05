@@ -18,10 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.mvpandroid.R;
-import com.example.mvpandroid.data.FilmeServiceImpl;
-import com.example.mvpandroid.data.model.Filme;
 import com.example.mvpandroid.data.model.FilmeDetalhes;
-import com.example.mvpandroid.data.model.OnItemListClick;
 import com.example.mvpandroid.detalhes.DetalhesActivity;
 import com.squareup.picasso.Picasso;
 
@@ -43,7 +40,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     @Override
     public void onCreate(@NonNull Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        mListAdapter = new FilmesAdapter(new ArrayList<Filme>(0), mItemListener);
+        mListAdapter = new FilmesAdapter(new ArrayList<FilmeDetalhes>(0), mItemListener);
         mActionsListener = new FilmesPresenter(this);
         setHasOptionsMenu(true);
     }
@@ -86,40 +83,41 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     }
 
     @Override
-    public void exibirFilmes(List<Filme> filmes) {
+    public void exibirFilmes(List<FilmeDetalhes> filmes) {
         mListAdapter.replaceData(filmes);
     }
 
+
     @Override
-    public void exibirDetalhesUI(String imdbid) {
+    public void exibirDetalhesUI(FilmeDetalhes filme) {
 
         Intent intent = new Intent(getActivity().getBaseContext(), DetalhesActivity.class);
-        intent.putExtra("imdbId", imdbid);
+        intent.putExtra("imdbid", filme.imdbid);
+        intent.putExtra("title", filme.title);
+        intent.putExtra("year", filme.year);
+        intent.putExtra("actors", filme.actors);
+        intent.putExtra("Director", filme.director);
+        intent.putExtra("plot", filme.plot);
+        intent.putExtra("poster", filme.poster);
 
-        /*intent.putExtra("Title", filme.title);
-        intent.putExtra("Genre", filme.director);
-        intent.putExtra("Plot", filme.plot);
-        intent.putExtra("imdbID", filme.imdbid);
-        intent.putExtra("Runtime", filme.runtime);
-        intent.putExtra("Poster",filme.poster);*/
         getActivity().startActivity(intent);
 
     }
 
     ItemListener mItemListener = new ItemListener(){
         @Override
-        public void onFilmeClick(Filme filme) {
-            exibirDetalhesUI(filme.id);
+        public void onFilmeClick(FilmeDetalhes filme) {
+            exibirDetalhesUI(filme);
         }
 
     };
 
     private class FilmesAdapter extends RecyclerView.Adapter<FilmesAdapter.ViewHolder>{
 
-        private List<Filme> mFilmes;
+        private List<FilmeDetalhes> mFilmes;
         private ItemListener mItemListener;
 
-        public FilmesAdapter(List<Filme> filmes, ItemListener itemListener){
+        public FilmesAdapter(List<FilmeDetalhes> filmes, ItemListener itemListener){
             setList(filmes);
             mItemListener = itemListener;
         }
@@ -135,25 +133,25 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-            Filme filme = mFilmes.get(position);
+            FilmeDetalhes filme = mFilmes.get(position);
 
             Picasso.with(viewHolder.thumbnail.getContext())
-                    .load(filme.posterUrl)
+                    .load(filme.poster)
                     .fit().centerCrop()
                     .placeholder(R.drawable.ic_insert_photo_black_48px)
                     .into(viewHolder.thumbnail);
 
-            viewHolder.titulo.setText(filme.titulo);
-            viewHolder.ano.setText(filme.ano);
+            viewHolder.titulo.setText(filme.title);
+            viewHolder.ano.setText(filme.year);
 
         }
 
-        void replaceData(List<Filme> notes){
+        void replaceData(List<FilmeDetalhes> notes){
             setList(notes);
             notifyDataSetChanged();
         }
 
-        private void setList(List<Filme> notes) {
+        private void setList(List<FilmeDetalhes> notes) {
             mFilmes = notes;
         }
 
@@ -162,7 +160,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
             return mFilmes.size();
         }
 
-        Filme getItem(int position){
+        FilmeDetalhes getItem(int position){
             return mFilmes.get(position);
         }
 
@@ -187,15 +185,14 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
             @Override
             public void onClick(View v) {
                 int position = getAdapterPosition();
-                Filme filme = getItem(position);
+                FilmeDetalhes filme = getItem(position);
                 mItemListener.onFilmeClick(filme);
-
             }
         }
     }
 
     public interface ItemListener{
-        void onFilmeClick(Filme clickedNote);
+        void onFilmeClick(FilmeDetalhes clickedNote);
 
     }
 

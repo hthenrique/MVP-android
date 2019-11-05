@@ -39,8 +39,8 @@ public class FilmeServiceImpl implements FilmeServiceApi {
     }
 
     @Override
-    public void getFilme(String imdbId, final FilmeServiceCallback<FilmeDetalhes> callBack) {
-        Call<FilmeDetalhes> callFilme = mRetrofit.buscaDetalhes(imdbId,"json");
+    public void getFilme(String imdbid, final FilmeServiceCallback<FilmeDetalhes> callBack) {
+        Call<FilmeDetalhes> callFilme = mRetrofit.buscaDetalhes(imdbid,"json");
         callFilme.enqueue(new Callback<FilmeDetalhes>() {
             @Override
             public void onResponse(Call<FilmeDetalhes> call, Response<FilmeDetalhes> response) {
@@ -52,7 +52,7 @@ public class FilmeServiceImpl implements FilmeServiceApi {
 
             @Override
             public void onFailure(Call<FilmeDetalhes> call, Throwable t) {
-                Toast.makeText(new DetalhesActivity(), "werftg", Toast.LENGTH_SHORT).show();
+                Toast.makeText(new DetalhesActivity(), "Erro", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -64,7 +64,7 @@ public class FilmeServiceImpl implements FilmeServiceApi {
             @Override
             public void onResponse(Call<FilmeResultadoBusca> call, Response<FilmeResultadoBusca> response) {
                 if (response.code()==200){
-                    FilmeResultadoBusca resultadoBusca =response.body();
+                    FilmeResultadoBusca resultadoBusca = response.body();
                     callback.onLoaded(resultadoBusca);
                 }
             }

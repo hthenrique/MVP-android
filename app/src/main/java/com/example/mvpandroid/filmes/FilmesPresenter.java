@@ -1,15 +1,11 @@
 package com.example.mvpandroid.filmes;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.example.mvpandroid.data.FilmeServiceApi;
 
 import com.example.mvpandroid.data.FilmeServiceImpl;
-import com.example.mvpandroid.data.model.Filme;
 import com.example.mvpandroid.data.model.FilmeDetalhes;
-import com.example.mvpandroid.data.model.FilmeResultadoBusca;
 
 public class FilmesPresenter implements FilmesContract.UserActionsListener {
     private final FilmeServiceApi mApi;
@@ -26,14 +22,14 @@ public class FilmesPresenter implements FilmesContract.UserActionsListener {
 
         mApi.getFilmes(resultadoBusca -> {
             mFilmesView.setCarregando(false);
-            mFilmesView.exibirFilmes(resultadoBusca.filmes);
+            mFilmesView.exibirFilmes(resultadoBusca.filme);
         });
     }
 
 
     @Override
-    public void abrirDetalhes(@NonNull Filme filme) {
-        mApi.getFilme(filme.id, filmes -> mFilmesView.exibirDetalhesUI(filmes.imdbid));
+    public void abrirDetalhes(@NonNull FilmeDetalhes filme) {
+        mApi.getFilme(filme.imdbid, filmes -> mFilmesView.exibirDetalhesUI(filme));
     }
 
     @Override
@@ -44,7 +40,7 @@ public class FilmesPresenter implements FilmesContract.UserActionsListener {
         }
         mApi.getPesquisa(FilmeNome, resultadoBusca -> {
             mFilmesView.setCarregando(false);
-            mFilmesView.exibirFilmes(resultadoBusca.filmes);
+            mFilmesView.exibirFilmes(resultadoBusca.filme);
         });
 
     }
