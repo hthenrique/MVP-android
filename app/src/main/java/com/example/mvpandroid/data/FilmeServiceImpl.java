@@ -21,7 +21,7 @@ public class FilmeServiceImpl implements FilmeServiceApi {
 
     @Override
     public void getFilmes(final FilmeServiceCallback<FilmeResultadoBusca> callback) {
-        Call<FilmeResultadoBusca> callFilmes = mRetrofit.busca("Spider-man","json");
+        Call<FilmeResultadoBusca> callFilmes = mRetrofit.busca2("2019","json");
         callFilmes.enqueue(new Callback<FilmeResultadoBusca>() {
             @Override
             public void onResponse(Call<FilmeResultadoBusca> call, Response<FilmeResultadoBusca> response) {
@@ -59,7 +59,7 @@ public class FilmeServiceImpl implements FilmeServiceApi {
 
     @Override
     public void getPesquisa(String FilmeNome, final FilmeServiceCallback<FilmeResultadoBusca> callback) {
-        Call<FilmeResultadoBusca> callFilme = mRetrofit.busca(FilmeNome,"json");
+        Call<FilmeResultadoBusca> callFilme = mRetrofit.busca(FilmeNome.trim(),"json");
         callFilme.enqueue(new Callback<FilmeResultadoBusca>() {
             @Override
             public void onResponse(Call<FilmeResultadoBusca> call, Response<FilmeResultadoBusca> response) {
@@ -71,7 +71,7 @@ public class FilmeServiceImpl implements FilmeServiceApi {
 
             @Override
             public void onFailure(Call<FilmeResultadoBusca> call, Throwable t) {
-
+                Toast.makeText(new DetalhesActivity(), "Erro", Toast.LENGTH_SHORT).show();
             }
         });
 

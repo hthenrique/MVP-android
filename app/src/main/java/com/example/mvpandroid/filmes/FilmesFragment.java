@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,7 +39,7 @@ import static android.content.Context.SEARCH_SERVICE;
 
 public class FilmesFragment extends Fragment implements FilmesContract.View {
 
-    private SearchView searchView = null;
+    private SearchView searchView;
     private SearchView.OnQueryTextListener queryTextListener;
     private String querySearch;
 
@@ -119,7 +120,6 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         intent.putExtra("plot", filme.plot);
         intent.putExtra("poster", filme.poster);
         intent.putExtra("genre",filme.genre);
-
         getActivity().startActivity(intent);
 
     }
