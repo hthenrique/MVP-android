@@ -1,7 +1,5 @@
 package com.example.mvpandroid.detalhes;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,31 +11,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mvpandroid.R;
-import com.example.mvpandroid.data.FilmeServiceApi;
-import com.example.mvpandroid.data.FilmeServiceImpl;
 import com.example.mvpandroid.data.model.FilmeDetalhes;
-import com.example.mvpandroid.filmes.FilmesContract;
 import com.squareup.picasso.Picasso;
-
-import retrofit2.Call;
 
 public class DetalhesFragment extends Fragment implements DetalhesContract.View {
 
     private DetalhesContract.Presenter presenter;
-
-    private String imdbid;
-
-    private DetalhesContract.UserActionsListener mActionListener;
 
     private TextView filme_titulo;
     private TextView filme_ano;
     private TextView filme_diretor;
     private TextView filme_atores;
     private TextView filme_sinopse;
+    private TextView filme_genero;
+    private ImageView filme_poster;
 
     public DetalhesFragment(){
     }
@@ -67,8 +56,15 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
         String director = getActivity().getIntent().getExtras().getString("director");
         String plot = getActivity().getIntent().getExtras().getString("plot");
         String poster = getActivity().getIntent().getExtras().getString("poster");
+        String genre = getActivity().getIntent().getExtras().getString("genre");
 
-        Picasso.with(getContext()).load(poster).fit().into();
+
+        filme_poster = root.findViewById(R.id.filme_poster);
+        Picasso.with(getContext())
+                .load(poster)
+                .fit()
+                .placeholder(R.drawable.ic_insert_photo_black_48px)
+                .into(filme_poster);
 
         filme_titulo = root.findViewById(R.id.filme_titulo);
         filme_titulo.setText(title);
@@ -85,6 +81,9 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
         filme_sinopse = root.findViewById(R.id.filme_sinopse);
         filme_sinopse.setText(plot);
 
+        filme_genero = root.findViewById(R.id.filme_genero);
+        filme_genero.setText(genre);
+
         presenter.carregarFilme(imdbid);
 
         return root;
@@ -97,7 +96,6 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
         filme_atores.setText(filmeDetalhes.actors);
         filme_diretor.setText(filmeDetalhes.director);
         filme_sinopse.setText(filmeDetalhes.plot);
-
-        Toast.makeText(getActivity(), filmeDetalhes.title, Toast.LENGTH_SHORT).show();
+        filme_genero.setText(filmeDetalhes.genre);
     }
 }

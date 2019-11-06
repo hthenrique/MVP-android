@@ -1,9 +1,14 @@
 package com.example.mvpandroid.filmes;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -26,6 +32,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilmesFragment extends Fragment implements FilmesContract.View {
+
+    private SearchView searchView = null;
+    private SearchView.OnQueryTextListener queryTextListener;
+    private String querySearch;
 
     private FilmesContract.UserActionsListener mActionsListener;
     private FilmesAdapter mListAdapter;
@@ -99,6 +109,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         intent.putExtra("Director", filme.director);
         intent.putExtra("plot", filme.plot);
         intent.putExtra("poster", filme.poster);
+        intent.putExtra("genre",filme.genre);
 
         getActivity().startActivity(intent);
 
