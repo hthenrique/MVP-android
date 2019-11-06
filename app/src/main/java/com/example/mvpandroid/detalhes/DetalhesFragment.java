@@ -1,5 +1,6 @@
 package com.example.mvpandroid.detalhes;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
     private TextView filme_sinopse;
     private TextView filme_genero;
     private ImageView filme_poster;
+    private View filme_nome;
 
     public DetalhesFragment(){
     }
@@ -44,6 +46,7 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
 
     }
 
+    @SuppressLint("ResourceType")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

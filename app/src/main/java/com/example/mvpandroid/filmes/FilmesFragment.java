@@ -16,7 +16,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -30,6 +32,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
+
+import static android.content.Context.SEARCH_SERVICE;
 
 public class FilmesFragment extends Fragment implements FilmesContract.View {
 
@@ -58,7 +63,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     @Override
     public void onResume() {
         super.onResume();
-        mActionsListener.carregarFilmes();
+        mActionsListener.carregarFilmes(querySearch);
     }
 
     @Nullable
@@ -67,6 +72,10 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         View root = inflater.inflate(R.layout.filmes_fragment, container, false);
         RecyclerView recyclerView = root.findViewById(R.id.filmes_list);
         recyclerView.setAdapter(mListAdapter);
+        Toolbar mToolbar = root.findViewById(R.id.main_toolbar);
+        recyclerView.setAdapter(mListAdapter);
+
+        ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
 
         int numColumns = 1;
 
@@ -115,13 +124,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
 
     }
 
-    ItemListener mItemListener = new ItemListener(){
-        @Override
-        public void onFilmeClick(FilmeDetalhes filme) {
-            exibirDetalhesUI(filme);
-        }
-
-    };
+    ItemListener mItemListener = filme -> exibirDetalhesUI(filme);
 
     private class FilmesAdapter extends RecyclerView.Adapter<FilmesAdapter.ViewHolder>{
 
@@ -205,6 +208,50 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     public interface ItemListener{
         void onFilmeClick(FilmeDetalhes clickedNote);
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        MenuItem searchItem = menu.findItem(R.id.mi_search);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(SEARCH_SERVICE);
+
+        if (searchItem != null)
+            searchView = (SearchView) searchItem.getActionView();
+
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+
+            queryTextListener = new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    Log.i("onQueryTextSubmit", query);
+                    querySearch = query;
+                    mActionsListener.carregarFilmes(query);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    Log.i("onQueryTextChange", newText);
+                    return true;
+                }
+            };
+            searchView.setOnQueryTextListener(queryTextListener);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.mi_search:
+                return false;
+            default:
+                break;
+        }
+        searchView.setOnQueryTextListener(queryTextListener);
+        return super.onOptionsItemSelected(item);
     }
 
 }
