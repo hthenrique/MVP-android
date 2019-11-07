@@ -63,10 +63,16 @@ public class FilmeServiceImpl implements FilmeServiceApi {
         callFilme.enqueue(new Callback<FilmeResultadoBusca>() {
             @Override
             public void onResponse(Call<FilmeResultadoBusca> call, Response<FilmeResultadoBusca> response) {
-                if (response.code()==200){
-                    FilmeResultadoBusca resultadoBusca = response.body();
-                    callback.onLoaded(resultadoBusca);
+
+                try{
+                    if (response.code()==200){
+                        FilmeResultadoBusca resultadoBusca = response.body();
+                        callback.onLoaded(resultadoBusca);
+                    }
+                }catch (Exception e){
+                    Toast.makeText(new DetalhesActivity(), "Nenhum Resultado", Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override

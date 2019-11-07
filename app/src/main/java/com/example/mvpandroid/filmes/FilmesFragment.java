@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,9 +57,12 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     @Override
     public void onCreate(@NonNull Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        mListAdapter = new FilmesAdapter(new ArrayList<FilmeDetalhes>(0), mItemListener);
-        mActionsListener = new FilmesPresenter(this);
-        setHasOptionsMenu(true);
+        if (mItemListener != null){
+            mListAdapter = new FilmesAdapter(new ArrayList<FilmeDetalhes>(0), mItemListener);
+            mActionsListener = new FilmesPresenter(this);
+            setHasOptionsMenu(true);
+        }
+
     }
 
     @Override
@@ -72,9 +76,11 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.filmes_fragment, container, false);
         RecyclerView recyclerView = root.findViewById(R.id.filmes_list);
-        recyclerView.setAdapter(mListAdapter);
+        if (mListAdapter != null) {
+            recyclerView.setAdapter(mListAdapter);
+        }
+
         Toolbar mToolbar = root.findViewById(R.id.main_toolbar);
-        recyclerView.setAdapter(mListAdapter);
 
         ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
 
@@ -88,7 +94,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                 ContextCompat.getColor(getActivity(), R.color.colorPrimary),
                 ContextCompat.getColor(getActivity(), R.color.colorAccent),
                 ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
-        swipeRefreshLayout.setOnRefreshListener(() -> mActionsListener.carregarFilmes());
+        swipeRefreshLayout.setOnRefreshListener(() -> mActionsListener.carregarFilmes(querySearch));
         return root;
     }
 
@@ -171,8 +177,14 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
 
         @Override
         public int getItemCount() {
-            return mFilmes.size();
+            if (mFilmes != null){
+                return mFilmes.size();
+            }else{
+                Toast.makeText(getContext(), "Nenhum Resultado", Toast.LENGTH_SHORT).show();
+            }
+                return 0;
         }
+
 
         FilmeDetalhes getItem(int position){
             return mFilmes.get(position);

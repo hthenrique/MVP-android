@@ -18,7 +18,7 @@ public interface FilmesContract {
 
     interface UserActionsListener{
 
-        void carregarFilmes();
+        //void carregarFilmes();
 
         void abrirDetalhes(@NonNull FilmeDetalhes filme);
 

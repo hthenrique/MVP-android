@@ -16,15 +16,15 @@ public class FilmesPresenter implements FilmesContract.UserActionsListener {
         mFilmesView = filmesView;
     }
 
-    @Override
+    /*@Override
     public void carregarFilmes() {
         mFilmesView.setCarregando(true);
 
-        mApi.getFilmes(resultadoBusca -> {
+        mApi.getPesquisa("",resultadoBusca -> {
             mFilmesView.setCarregando(false);
             mFilmesView.exibirFilmes(resultadoBusca.filme);
         });
-    }
+    }*/
 
 
     @Override
