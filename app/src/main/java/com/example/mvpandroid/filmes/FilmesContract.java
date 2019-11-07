@@ -23,6 +23,8 @@ public interface FilmesContract {
         void abrirDetalhes(@NonNull FilmeDetalhes filme);
 
         void carregarFilmes(String FilmeNome);
+
+        void carregarFilmesAno(String ano);
     }
 
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">imdb</string>
+    <string name="app_name">IMDb</string>
     <string name="search_title">search_title</string>
     <string name="search_hint">Search</string>
     <string name="filme_name"></string>

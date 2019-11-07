@@ -95,6 +95,9 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                 ContextCompat.getColor(getActivity(), R.color.colorAccent),
                 ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
         swipeRefreshLayout.setOnRefreshListener(() -> mActionsListener.carregarFilmes(querySearch));
+
+        mActionsListener.carregarFilmesAno("2019");
+
         return root;
     }
 

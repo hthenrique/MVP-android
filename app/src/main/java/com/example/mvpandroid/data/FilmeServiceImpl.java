@@ -83,5 +83,24 @@ public class FilmeServiceImpl implements FilmeServiceApi {
 
     }
 
+    @Override
+    public void getFilmeAno(String ano, final FilmeServiceCallback<FilmeResultadoBusca> callback) {
+        Call<FilmeResultadoBusca> callFilme = mRetrofit.busca2(ano,"json");
+        callFilme.enqueue(new Callback<FilmeResultadoBusca>() {
+            @Override
+            public void onResponse(Call<FilmeResultadoBusca> call, Response<FilmeResultadoBusca> response) {
+                if (response.code()==200){
+                    FilmeResultadoBusca filmes = response.body();
+                    callback.onLoaded(filmes);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FilmeResultadoBusca> call, Throwable t) {
+                Toast.makeText(new DetalhesActivity(), "Erro", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 }
