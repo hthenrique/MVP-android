@@ -4,6 +4,8 @@ package com.example.mvpandroid.data;
 import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.data.model.FilmeResultadoBusca;
 
+//View
+
 public interface FilmeServiceApi {
 
     interface FilmeServiceCallback<T>{

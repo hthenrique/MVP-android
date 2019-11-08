@@ -36,6 +36,10 @@ public class DetalhesActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 

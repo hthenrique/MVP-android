@@ -11,10 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +32,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import static android.content.Context.SEARCH_SERVICE;
 
@@ -94,9 +91,9 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                 ContextCompat.getColor(getActivity(), R.color.colorPrimary),
                 ContextCompat.getColor(getActivity(), R.color.colorAccent),
                 ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+
         swipeRefreshLayout.setOnRefreshListener(() -> mActionsListener.carregarFilmes(querySearch));
 
-        mActionsListener.carregarFilmesAno("2019");
 
         return root;
     }
@@ -129,6 +126,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         intent.putExtra("plot", filme.plot);
         intent.putExtra("poster", filme.poster);
         intent.putExtra("genre",filme.genre);
+
         getActivity().startActivity(intent);
 
     }
@@ -182,8 +180,10 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         public int getItemCount() {
             if (mFilmes != null){
                 return mFilmes.size();
+
             }else{
-                Toast.makeText(getContext(), "Nenhum Resultado", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity().getBaseContext(), NenhumResultadoActivity.class);
+                startActivity(intent);
             }
                 return 0;
         }

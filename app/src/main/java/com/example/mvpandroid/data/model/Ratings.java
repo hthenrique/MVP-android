@@ -2,7 +2,7 @@ package com.example.mvpandroid.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-class Ratings {
+public class Ratings {
     @SerializedName("Source")
     public String source;
 

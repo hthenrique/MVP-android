@@ -11,9 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".detalhes.DetalhesActivity"
-            android:label="@string/filme_name"></activity>
-        <activity android:name=".filmes.FilmesActivity"
+        <activity android:name=".filmes.NenhumResultadoActivity"></activity>
+        <activity
+            android:name=".detalhes.DetalhesActivity"
+            android:label="@string/filme_name" />
+        <activity
+            android:name=".filmes.FilmesActivity"
             android:theme="@style/AppTheme2">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -21,9 +24,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+                android:resource="@xml/searchable" />
         </activity>
     </application>
 

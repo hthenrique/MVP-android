@@ -35,14 +35,15 @@ public class FilmesPresenter implements FilmesContract.UserActionsListener {
     @Override
     public void carregarFilmes(String FilmeNome) {
         mFilmesView.setCarregando(false);
-        if (FilmeNome != null){
+        if (FilmeNome == null){
+            FilmeNome = "Spider-man";
             mApi.getPesquisa(FilmeNome, resultadoBusca -> {
                 mFilmesView.setCarregando(false);
                 mFilmesView.exibirFilmes(resultadoBusca.filme);
             });
 
         }else {
-            mApi.getFilmes(resultadoBusca -> {
+            mApi.getPesquisa(FilmeNome, resultadoBusca -> {
                 mFilmesView.setCarregando(false);
                 mFilmesView.exibirFilmes(resultadoBusca.filme);
             });

@@ -1,16 +1,20 @@
 package com.example.mvpandroid.detalhes;
 
 import android.annotation.SuppressLint;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.mvpandroid.R;
@@ -27,7 +31,9 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
     private TextView filme_atores;
     private TextView filme_sinopse;
     private TextView filme_genero;
+    private TextView filme_producao;
     private ImageView filme_poster;
+    private RatingBar ratingBar;
     private View filme_nome;
 
     public DetalhesFragment(){
@@ -61,7 +67,6 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
         String poster = getActivity().getIntent().getExtras().getString("poster");
         String genre = getActivity().getIntent().getExtras().getString("genre");
 
-
         filme_poster = root.findViewById(R.id.filme_poster);
         Picasso.with(getContext())
                 .load(poster)
@@ -86,6 +91,18 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
 
         filme_genero = root.findViewById(R.id.filme_genero);
         filme_genero.setText(genre);
+
+        ((DetalhesActivity) getActivity())
+                .setActionBarTitle(title);
+
+        /*filme_producao = root.findViewById(R.id.filme_producao);
+        filme_producao.setText(prodution);
+
+        ratingBar = root.findViewById(R.id.ratingBar);
+        ratingBar.setRating((float)imdbrating);*/
+
+        //LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        //stars.getDrawable(2).setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
 
         presenter.carregarFilme(imdbid);
 

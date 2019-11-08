@@ -55,7 +55,7 @@ public class FilmeDetalhes {
     public String metascore;
 
     @SerializedName("imdbRating")
-    public String imdbrating;
+    public double imdbrating;
 
     @SerializedName("imdbVotes")
     public String imdbvotes;
