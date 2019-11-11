@@ -47,6 +47,16 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/filme_faixa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="3dp"
+                            android:text="Tag-x"
+                            android:gravity="center"
+                            android:textColor="@color/cardview_light_background"/>
+
+                        <TextView
                             android:id="@+id/filme_producao"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

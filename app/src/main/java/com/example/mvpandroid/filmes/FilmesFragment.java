@@ -44,6 +44,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     private FilmesContract.UserActionsListener mActionsListener;
     private FilmesAdapter mListAdapter;
 
+
     public FilmesFragment(){
     }
 
@@ -58,6 +59,8 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
             mListAdapter = new FilmesAdapter(new ArrayList<FilmeDetalhes>(0), mItemListener);
             mActionsListener = new FilmesPresenter(this);
             setHasOptionsMenu(true);
+
+
         }
 
     }
@@ -94,7 +97,6 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
 
         swipeRefreshLayout.setOnRefreshListener(() -> mActionsListener.carregarFilmes(querySearch));
 
-
         return root;
     }
 
@@ -126,6 +128,11 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         intent.putExtra("plot", filme.plot);
         intent.putExtra("poster", filme.poster);
         intent.putExtra("genre",filme.genre);
+        intent.putExtra("production",filme.production);
+        intent.putExtra("Rated",filme.rated);
+        intent.putExtra("Rated",filme.rated);
+        intent.putExtra("imdbRating",filme.imdbrating);
+
 
         getActivity().startActivity(intent);
 
@@ -165,6 +172,8 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
             viewHolder.titulo.setText(filme.title);
             viewHolder.ano.setText(filme.year);
 
+
+
         }
 
         void replaceData(List<FilmeDetalhes> notes){
@@ -185,7 +194,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                 Intent intent = new Intent(getActivity().getBaseContext(), NenhumResultadoActivity.class);
                 startActivity(intent);
             }
-                return 0;
+                return Integer.MAX_VALUE;
         }
 
 

@@ -32,6 +32,7 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
     private TextView filme_sinopse;
     private TextView filme_genero;
     private TextView filme_producao;
+    private TextView filme_faixa;
     private ImageView filme_poster;
     private RatingBar ratingBar;
     private View filme_nome;
@@ -66,6 +67,9 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
         String plot = getActivity().getIntent().getExtras().getString("plot");
         String poster = getActivity().getIntent().getExtras().getString("poster");
         String genre = getActivity().getIntent().getExtras().getString("genre");
+        String production = getActivity().getIntent().getExtras().getString("production");
+        String rated = getActivity().getIntent().getExtras().getString("Rated");
+        double imdbrating = getActivity().getIntent().getExtras().getDouble("imdbRating");
 
         filme_poster = root.findViewById(R.id.filme_poster);
         Picasso.with(getContext())
@@ -92,14 +96,14 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
         filme_genero = root.findViewById(R.id.filme_genero);
         filme_genero.setText(genre);
 
-        ((DetalhesActivity) getActivity())
-                .setActionBarTitle(title);
+        filme_producao = root.findViewById(R.id.filme_producao);
+        filme_producao.setText(production);
 
-        /*filme_producao = root.findViewById(R.id.filme_producao);
-        filme_producao.setText(prodution);
+        filme_faixa = root.findViewById(R.id.filme_faixa);
+        filme_faixa.setText(rated);
 
         ratingBar = root.findViewById(R.id.ratingBar);
-        ratingBar.setRating((float)imdbrating);*/
+        //ratingBar.setRating((float)imdbrating/2);
 
         //LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         //stars.getDrawable(2).setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
@@ -111,11 +115,17 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
 
     @Override
     public void exibirDetalhes(FilmeDetalhes filmeDetalhes) {
+        ((DetalhesActivity) getActivity())
+                .setActionBarTitle(filmeDetalhes.title);
+
         filme_titulo.setText(filmeDetalhes.title);
         filme_ano.setText(filmeDetalhes.year);
         filme_atores.setText(filmeDetalhes.actors);
         filme_diretor.setText(filmeDetalhes.director);
         filme_sinopse.setText(filmeDetalhes.plot);
         filme_genero.setText(filmeDetalhes.genre);
+        filme_producao.setText(filmeDetalhes.production);
+        filme_faixa.setText(filmeDetalhes.rated);
+        ratingBar.setRating((float)filmeDetalhes.imdbrating/2);
     }
 }

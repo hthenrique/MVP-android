@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".filmes.NenhumResultadoActivity"></activity>
+        <activity android:name=".filmes.NenhumResultadoActivity"
+            android:label="Nenhum Resultado"></activity>
         <activity
             android:name=".detalhes.DetalhesActivity"
             android:label="@string/filme_name" />

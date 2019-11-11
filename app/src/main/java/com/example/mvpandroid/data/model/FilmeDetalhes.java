@@ -73,7 +73,7 @@ public class FilmeDetalhes {
     public String boxoffice;
 
     @SerializedName("Production")
-    public String prodution;
+    public String production;
 
     @SerializedName("Website")
     public String website;
