@@ -44,7 +44,6 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     private FilmesContract.UserActionsListener mActionsListener;
     private FilmesAdapter mListAdapter;
 
-
     public FilmesFragment(){
     }
 
@@ -59,8 +58,6 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
             mListAdapter = new FilmesAdapter(new ArrayList<FilmeDetalhes>(0), mItemListener);
             mActionsListener = new FilmesPresenter(this);
             setHasOptionsMenu(true);
-
-
         }
 
     }
@@ -96,6 +93,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                 ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
 
         swipeRefreshLayout.setOnRefreshListener(() -> mActionsListener.carregarFilmes(querySearch));
+
 
         return root;
     }
@@ -172,8 +170,6 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
             viewHolder.titulo.setText(filme.title);
             viewHolder.ano.setText(filme.year);
 
-
-
         }
 
         void replaceData(List<FilmeDetalhes> notes){
@@ -194,7 +190,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                 Intent intent = new Intent(getActivity().getBaseContext(), NenhumResultadoActivity.class);
                 startActivity(intent);
             }
-                return Integer.MAX_VALUE;
+                return 0;
         }
 
 
