@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +28,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.mvpandroid.R;
 import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.detalhes.DetalhesActivity;
+import com.example.mvpandroid.utils.InfiniteScrollListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -42,7 +42,10 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     private SearchView.OnQueryTextListener queryTextListener;
     private String querySearch;
 
+    private FilmesPresenter presenter;
     boolean isScrolling = false;
+    private GridLayoutManager gridLayoutManager;
+    InfiniteScrollListener infiniteScrollListener;
 
     private FilmesContract.UserActionsListener mActionsListener;
     private FilmesAdapter mListAdapter;
@@ -61,6 +64,8 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
             mListAdapter = new FilmesAdapter(new ArrayList<FilmeDetalhes>(0), mItemListener);
             mActionsListener = new FilmesPresenter(this);
             setHasOptionsMenu(true);
+
+            setupPresenter();
         }
 
     }
@@ -69,6 +74,13 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     public void onResume() {
         super.onResume();
         mActionsListener.carregarFilmes(querySearch);
+    }
+
+    private void setupPresenter() {
+        presenter = new FilmesPresenter(FilmesContract);
+        presenter.attachView(this);
+        presenter.subscribe();
+        presenter.updatePhotos(1);  //TODO: make this dynamic
     }
 
     @Nullable
@@ -88,20 +100,15 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), numColumns));
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
-                    isScrolling = true;
-                }
-            }
 
+        gridLayoutManager = new GridLayoutManager(getContext(),1);
+
+        infiniteScrollListener = new InfiniteScrollListener(gridLayoutManager) {
             @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+
             }
-        });
+        };
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.SwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(
@@ -110,7 +117,6 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                 ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
 
         swipeRefreshLayout.setOnRefreshListener(() -> mActionsListener.carregarFilmes(querySearch));
-
 
         return root;
     }

@@ -16,22 +16,14 @@ public class FilmesPresenter implements FilmesContract.UserActionsListener {
         mFilmesView = filmesView;
     }
 
-    /*@Override
-    public void carregarFilmes() {
-        mFilmesView.setCarregando(true);
-
-        mApi.getPesquisa("",resultadoBusca -> {
-            mFilmesView.setCarregando(false);
-            mFilmesView.exibirFilmes(resultadoBusca.filme);
-        });
-    }*/
-
-
+    //Busca destalhes através do ID
     @Override
     public void abrirDetalhes(@NonNull FilmeDetalhes filme) {
         mApi.getFilme(filme.imdbid, filmes -> mFilmesView.exibirDetalhesUI(filme));
     }
 
+
+    //Carrega filmes pesquisados
     @Override
     public void carregarFilmes(String FilmeNome) {
         mFilmesView.setCarregando(false);
@@ -50,12 +42,4 @@ public class FilmesPresenter implements FilmesContract.UserActionsListener {
         }
     }
 
-    @Override
-    public void carregarFilmesAno(String ano) {
-        mFilmesView.setCarregando(false);
-        mApi.getFilmeAno(ano, resultadoBusca -> {
-            mFilmesView.setCarregando(false);
-            mFilmesView.exibirFilmes(resultadoBusca.filme);
-        });
-    }
 }

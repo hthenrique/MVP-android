@@ -18,13 +18,11 @@ public interface FilmesContract {
 
     interface UserActionsListener{
 
-        //void carregarFilmes();
 
         void abrirDetalhes(@NonNull FilmeDetalhes filme);
 
         void carregarFilmes(String FilmeNome);
 
-        void carregarFilmesAno(String ano);
     }
 
 }
