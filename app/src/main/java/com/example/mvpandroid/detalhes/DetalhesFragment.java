@@ -33,6 +33,9 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
     private TextView filme_genero;
     private TextView filme_producao;
     private TextView filme_faixa;
+    private TextView filme_boxoffice;
+    private TextView filme_duracao;
+    private TextView filme_linguagem;
     private ImageView filme_poster;
     private RatingBar ratingBar;
     private View filme_nome;
@@ -69,6 +72,9 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
         String genre = getActivity().getIntent().getExtras().getString("genre");
         String production = getActivity().getIntent().getExtras().getString("production");
         String rated = getActivity().getIntent().getExtras().getString("Rated");
+        String boxoffice = getActivity().getIntent().getExtras().getString("BoxOffice");
+        String runtime = getActivity().getIntent().getExtras().getString("Runtime");
+        String language = getActivity().getIntent().getExtras().getString("Language");
         double imdbrating = getActivity().getIntent().getExtras().getDouble("imdbRating");
 
         filme_poster = root.findViewById(R.id.filme_poster);
@@ -79,34 +85,28 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
                 .into(filme_poster);
 
         filme_titulo = root.findViewById(R.id.filme_titulo);
-        filme_titulo.setText(title);
 
         filme_ano = root.findViewById(R.id.filme_ano);
-        filme_ano.setText(year);
 
         filme_atores = root.findViewById(R.id.filme_atores);
-        filme_atores.setText(actors);
 
         filme_diretor = root.findViewById(R.id.filme_diretor);
-        filme_diretor.setText(director);
 
         filme_sinopse = root.findViewById(R.id.filme_sinopse);
-        filme_sinopse.setText(plot);
 
         filme_genero = root.findViewById(R.id.filme_genero);
-        filme_genero.setText(genre);
 
         filme_producao = root.findViewById(R.id.filme_producao);
-        filme_producao.setText(production);
 
         filme_faixa = root.findViewById(R.id.filme_faixa);
-        filme_faixa.setText(rated);
+
+        filme_boxoffice = root.findViewById(R.id.filme_boxoffice);
+
+        filme_duracao = root.findViewById(R.id.filme_duracao);
+
+        filme_linguagem = root.findViewById(R.id.filme_linguagem);
 
         ratingBar = root.findViewById(R.id.ratingBar);
-        //ratingBar.setRating((float)imdbrating/2);
-
-        //LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-        //stars.getDrawable(2).setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
 
         presenter.carregarFilme(imdbid);
 
@@ -126,6 +126,9 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
         filme_genero.setText(filmeDetalhes.genre);
         filme_producao.setText(filmeDetalhes.production);
         filme_faixa.setText(filmeDetalhes.rated);
+        filme_boxoffice.setText(filmeDetalhes.boxoffice);
+        filme_duracao.setText(filmeDetalhes.runtime);
+        filme_linguagem.setText(filmeDetalhes.language);
         ratingBar.setRating((float)filmeDetalhes.imdbrating/2);
     }
 }

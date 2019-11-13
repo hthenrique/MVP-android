@@ -145,7 +145,9 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         intent.putExtra("genre",filme.genre);
         intent.putExtra("production",filme.production);
         intent.putExtra("Rated",filme.rated);
-        intent.putExtra("Rated",filme.rated);
+        intent.putExtra("BoxOffice",filme.boxoffice);
+        intent.putExtra("Runtime",filme.runtime);
+        intent.putExtra("Language",filme.language);
         intent.putExtra("imdbRating",filme.imdbrating);
 
 
