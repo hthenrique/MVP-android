@@ -22,19 +22,24 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.mvpandroid.R;
+import com.example.mvpandroid.data.RetrofitEndpoint;
 import com.example.mvpandroid.data.model.FilmeDetalhes;
+import com.example.mvpandroid.data.model.FilmeResultadoBusca;
 import com.example.mvpandroid.detalhes.DetalhesActivity;
-import com.example.mvpandroid.utils.InfiniteScrollListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+
 import static android.content.Context.SEARCH_SERVICE;
+import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
 
 public class FilmesFragment extends Fragment implements FilmesContract.View {
 
@@ -42,10 +47,11 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     private SearchView.OnQueryTextListener queryTextListener;
     private String querySearch;
 
-    private FilmesPresenter presenter;
-    boolean isScrolling = false;
-    private GridLayoutManager gridLayoutManager;
-    InfiniteScrollListener infiniteScrollListener;
+    private LinearLayoutManager layoutManager;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int currentPage = 1;
+    private RetrofitEndpoint retrofitEndpoint;
 
     private FilmesContract.UserActionsListener mActionsListener;
     private FilmesAdapter mListAdapter;
@@ -65,7 +71,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
             mActionsListener = new FilmesPresenter(this);
             setHasOptionsMenu(true);
 
-            setupPresenter();
+            //setupPresenter();
         }
 
     }
@@ -76,12 +82,12 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         mActionsListener.carregarFilmes(querySearch);
     }
 
-    private void setupPresenter() {
+    /*private void setupPresenter() {
         presenter = new FilmesPresenter(FilmesContract);
         presenter.attachView(this);
         presenter.subscribe();
         presenter.updatePhotos(1);  //TODO: make this dynamic
-    }
+    }*/
 
     @Nullable
     @Override
@@ -101,15 +107,6 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), numColumns));
 
-        gridLayoutManager = new GridLayoutManager(getContext(),1);
-
-        infiniteScrollListener = new InfiniteScrollListener(gridLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-
-            }
-        };
-
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.SwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.colorPrimary),
@@ -119,6 +116,39 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         swipeRefreshLayout.setOnRefreshListener(() -> mActionsListener.carregarFilmes(querySearch));
 
         return root;
+    }
+
+    private RecyclerView.OnScrollListener recyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            int visibleItemCount = layoutManager.getChildCount();
+            int totalItemCount = layoutManager.getItemCount();
+            int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+            if (!isLoading && !isLastPage) {
+                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                        && firstVisibleItemPosition >= 0
+                        && totalItemCount >= PAGE_SIZE) {
+                    loadMoreItems();
+                }
+            }
+        }
+    };
+
+    private void loadMoreItems() {
+        isLoading = true;
+
+        currentPage += 1;
+
+        Call<FilmeResultadoBusca> findFilmesCall = retrofitEndpoint.busca(querySearch, "json");
+        getActivity().getBaseContext().add(findFilmesCall);
+        findFilmesCall.enqueue(callFilme);
     }
 
     @Override

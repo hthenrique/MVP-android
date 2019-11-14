@@ -9,10 +9,17 @@ import com.example.mvpandroid.data.FilmeServiceApi;
 import com.example.mvpandroid.data.FilmeServiceImpl;
 import com.example.mvpandroid.data.model.FilmeDetalhes;
 
+import java.util.List;
+
 public class FilmesPresenter implements FilmesContract.UserActionsListener {
     private final FilmeServiceApi mApi;
     private final FilmesContract.View mFilmesView;
+
+    private static int PAGE = 1;
+
     Context context;
+
+    FilmeServiceImpl client;
 
     public FilmesPresenter(FilmesContract.View filmesView) {
         mApi = new FilmeServiceImpl(context);

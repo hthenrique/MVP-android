@@ -14,6 +14,7 @@ public interface FilmesContract {
         void exibirFilmes(List<FilmeDetalhes> filmes);
 
         void exibirDetalhesUI (FilmeDetalhes filme);
+
     }
 
     interface UserActionsListener{
