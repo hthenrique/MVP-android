@@ -1,16 +1,18 @@
 package com.example.mvpandroid.detalhes;
 
+import android.content.Context;
+
 import com.example.mvpandroid.data.FilmeServiceApi;
 import com.example.mvpandroid.data.FilmeServiceImpl;
-import com.example.mvpandroid.data.model.FilmeDetalhes;
 
 public class DetalhesPresenter implements DetalhesContract.Presenter {
 
     private final FilmeServiceApi mApi;
     private final DetalhesContract.View mDetalhesView;
+    Context context;
 
     DetalhesPresenter(DetalhesContract.View detalhesView) {
-        mApi = new FilmeServiceImpl();
+        mApi = new FilmeServiceImpl(context);
         mDetalhesView = detalhesView;
     }
 

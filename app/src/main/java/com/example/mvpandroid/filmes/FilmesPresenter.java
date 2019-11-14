@@ -1,5 +1,7 @@
 package com.example.mvpandroid.filmes;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import com.example.mvpandroid.data.FilmeServiceApi;
@@ -10,9 +12,10 @@ import com.example.mvpandroid.data.model.FilmeDetalhes;
 public class FilmesPresenter implements FilmesContract.UserActionsListener {
     private final FilmeServiceApi mApi;
     private final FilmesContract.View mFilmesView;
+    Context context;
 
     public FilmesPresenter(FilmesContract.View filmesView) {
-        mApi = new FilmeServiceImpl();
+        mApi = new FilmeServiceImpl(context);
         mFilmesView = filmesView;
     }
 
