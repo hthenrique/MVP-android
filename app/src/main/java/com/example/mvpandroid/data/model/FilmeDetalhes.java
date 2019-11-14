@@ -84,5 +84,4 @@ public class FilmeDetalhes {
     public FilmeDetalhes(){
 
     }
-
 }

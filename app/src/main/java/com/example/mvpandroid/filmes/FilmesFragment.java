@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,12 +47,17 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     private SearchView searchView;
     private SearchView.OnQueryTextListener queryTextListener;
     private String querySearch;
+    private static int firstVisibleInListview;
 
     private LinearLayoutManager layoutManager;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int currentPage = 1;
     private RetrofitEndpoint retrofitEndpoint;
+    private int totalPage = 10;
+    int itemCount = 0;
+    //private OnLoadMoreListener onLoadMoreListener;
+    //private int currentPage = PAGE_START;
 
     private FilmesContract.UserActionsListener mActionsListener;
     private FilmesAdapter mListAdapter;
@@ -71,6 +77,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
             mActionsListener = new FilmesPresenter(this);
             setHasOptionsMenu(true);
 
+            //apiCall();
             //setupPresenter();
         }
 
@@ -106,6 +113,23 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), numColumns));
+
+        firstVisibleInListview = layoutManager.findFirstVisibleItemPosition();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int currentFirstVisible = layoutManager.findFirstVisibleItemPosition();
+
+                if(currentFirstVisible > firstVisibleInListview)
+                    Log.i("RecyclerView scrolled: ", "scroll up!");
+                else
+                    Log.i("RecyclerView scrolled: ", "scroll down!");
+
+                firstVisibleInListview = currentFirstVisible;
+
+            }
+        });
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.SwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(
@@ -145,11 +169,26 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         isLoading = true;
 
         currentPage += 1;
-
-        Call<FilmeResultadoBusca> findFilmesCall = retrofitEndpoint.busca(querySearch, "json");
-        getActivity().getBaseContext().add(findFilmesCall);
-        findFilmesCall.enqueue(callFilme);
+        
+        //apiCall();
     }
+
+    /*private void apiCall() {
+        final ArrayList<FilmeDetalhes> items = new ArrayList<>();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++){
+                    itemCount++;
+                    FilmeDetalhes filmeDetalhes = new FilmeDetalhes();
+                    items.add(filmeDetalhes);
+                }
+
+                if (currentPage != PAGE_START);
+                mListAdapter,addItems
+            }
+        });
+    }*/
 
     @Override
     public void setCarregando(final boolean isAtivo) {
@@ -247,7 +286,6 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
             }
                 return 0;
         }
-
 
         FilmeDetalhes getItem(int position){
             return mFilmes.get(position);
