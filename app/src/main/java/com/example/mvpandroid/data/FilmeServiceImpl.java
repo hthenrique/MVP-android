@@ -78,7 +78,7 @@ public class FilmeServiceImpl implements FilmeServiceApi {
 
             @Override
             public void onFailure(Call<FilmeResultadoBusca> call, Throwable t) {
-                Toast.makeText(new DetalhesActivity(), "Erro", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Erro", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -65,7 +65,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
             mActionsListener = new FilmesPresenter(this);
             setHasOptionsMenu(true);
 
-            setupPresenter();
+            //setupPresenter();
         }
 
     }
@@ -76,12 +76,12 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         mActionsListener.carregarFilmes(querySearch);
     }
 
-    private void setupPresenter() {
+    /*private void setupPresenter() {
         presenter = new FilmesPresenter(FilmesContract);
         presenter.attachView(this);
         presenter.subscribe();
         presenter.updatePhotos(1);  //TODO: make this dynamic
-    }
+    }*/
 
     @Nullable
     @Override
@@ -103,12 +103,12 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
 
         gridLayoutManager = new GridLayoutManager(getContext(),1);
 
-        infiniteScrollListener = new InfiniteScrollListener(gridLayoutManager) {
+        /*infiniteScrollListener = new InfiniteScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
 
             }
-        };
+        };*/
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.SwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(
