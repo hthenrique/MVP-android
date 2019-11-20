@@ -220,7 +220,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         intent.putExtra("Runtime",filme.runtime);
         intent.putExtra("Language",filme.language);
         intent.putExtra("imdbRating",filme.imdbrating);
-        
+
         getActivity().startActivity(intent);
 
     }
