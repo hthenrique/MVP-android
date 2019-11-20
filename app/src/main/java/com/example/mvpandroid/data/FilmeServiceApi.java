@@ -12,11 +12,10 @@ public interface FilmeServiceApi {
         void onLoaded(T filmes);
     }
 
-    //void getFilmes(FilmeServiceCallback<FilmeResultadoBusca> callback);
-
     void getFilme(String imdbid, FilmeServiceCallback<FilmeDetalhes> callback);
 
     void getPesquisa(String FilmeNome, FilmeServiceCallback<FilmeResultadoBusca> callback);
 
+    //void getFilmes(FilmeServiceCallback<FilmeResultadoBusca> callback);
 
 }

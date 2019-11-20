@@ -5,7 +5,6 @@ import android.widget.Toast;
 
 import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.data.model.FilmeResultadoBusca;
-import com.example.mvpandroid.detalhes.DetalhesActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -13,31 +12,13 @@ import retrofit2.Response;
 
 public class FilmeServiceImpl implements FilmeServiceApi {
 
-    RetrofitEndpoint mRetrofit;
-    Context context;
+    private RetrofitEndpoint mRetrofit;
+    private Context context;
 
     public FilmeServiceImpl(Context context) {
+        this.context = context;
         mRetrofit = RetrofitClient.getClient().create(RetrofitEndpoint.class);
     }
-
-    /*@Override
-    public void getFilmes(final FilmeServiceCallback<FilmeResultadoBusca> callback) {
-        Call<FilmeResultadoBusca> callFilmes = mRetrofit.busca2("2019","json");
-        callFilmes.enqueue(new Callback<FilmeResultadoBusca>() {
-            @Override
-            public void onResponse(Call<FilmeResultadoBusca> call, Response<FilmeResultadoBusca> response) {
-                if (response.code()==200){
-                    FilmeResultadoBusca resultadoBusca = response.body();
-                    callback.onLoaded(resultadoBusca);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<FilmeResultadoBusca> call, Throwable t) {
-
-            }
-        });
-    }*/
 
     @Override
     public void getFilme(String imdbid, final FilmeServiceCallback<FilmeDetalhes> callBack) {
@@ -64,7 +45,6 @@ public class FilmeServiceImpl implements FilmeServiceApi {
         callFilme.enqueue(new Callback<FilmeResultadoBusca>() {
             @Override
             public void onResponse(Call<FilmeResultadoBusca> call, Response<FilmeResultadoBusca> response) {
-
                 try{
                     if (response.code()==200){
                         FilmeResultadoBusca resultadoBusca = response.body();
@@ -73,7 +53,6 @@ public class FilmeServiceImpl implements FilmeServiceApi {
                 }catch (Exception e){
                     Toast.makeText(context, "Nenhum Resultado", Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
@@ -81,8 +60,23 @@ public class FilmeServiceImpl implements FilmeServiceApi {
                 Toast.makeText(context, "Erro", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
+    /*@Override
+    public void getFilmes(final FilmeServiceCallback<FilmeResultadoBusca> callback) {
+        Call<FilmeResultadoBusca> callFilmes = mRetrofit.busca2("2019","json");
+        callFilmes.enqueue(new Callback<FilmeResultadoBusca>() {
+            @Override
+            public void onResponse(Call<FilmeResultadoBusca> call, Response<FilmeResultadoBusca> response) {
+                if (response.code()==200){
+                    FilmeResultadoBusca resultadoBusca = response.body();
+                    callback.onLoaded(resultadoBusca);
+                }
+            }
 
+            @Override
+            public void onFailure(Call<FilmeResultadoBusca> call, Throwable t)
+            }
+        });
+    }*/
 }

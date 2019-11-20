@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,14 +29,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.mvpandroid.R;
 import com.example.mvpandroid.data.RetrofitEndpoint;
 import com.example.mvpandroid.data.model.FilmeDetalhes;
-import com.example.mvpandroid.data.model.FilmeResultadoBusca;
 import com.example.mvpandroid.detalhes.DetalhesActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
 
 import static android.content.Context.SEARCH_SERVICE;
 import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
@@ -224,8 +220,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         intent.putExtra("Runtime",filme.runtime);
         intent.putExtra("Language",filme.language);
         intent.putExtra("imdbRating",filme.imdbrating);
-
-
+        
         getActivity().startActivity(intent);
 
     }
