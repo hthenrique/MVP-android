@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,42 +26,34 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.mvpandroid.BuildConfig;
 import com.example.mvpandroid.R;
 import com.example.mvpandroid.data.RetrofitEndpoint;
 import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.detalhes.DetalhesActivity;
-import com.example.mvpandroid.utils.PaginationAdapter;
-import com.example.mvpandroid.utils.PaginationScrollListener;
-import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import static android.content.Context.SEARCH_SERVICE;
+import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
 
 public class FilmesFragment extends Fragment implements FilmesContract.View {
-
-    RecyclerView rv;
-    LinearLayoutManager linearLayoutManager;
-    PaginationAdapter adapter;
-    private static final int PAGE_START = 1;
-    private boolean isLoading = false;
-    private boolean isLastPage = false;
-    private int TOTAL_PAGES = 5;
-    private int currentPage = PAGE_START;
-    private static final String TAG = "FilmesActivity";
-    private RetrofitEndpoint movieService;
 
     private SearchView searchView;
     private SearchView.OnQueryTextListener queryTextListener;
     private String querySearch;
     private static int firstVisibleInListview;
+
+    private LinearLayoutManager layoutManager;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int currentPage = 1;
+    private RetrofitEndpoint retrofitEndpoint;
+    private int totalPage = 10;
+    int itemCount = 0;
+    //private OnLoadMoreListener onLoadMoreListener;
+    //private int currentPage = PAGE_START;
 
     private FilmesContract.UserActionsListener mActionsListener;
     private FilmesAdapter mListAdapter;
@@ -77,11 +68,13 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     @Override
     public void onCreate(@NonNull Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
         if (mItemListener != null){
             mListAdapter = new FilmesAdapter(new ArrayList<FilmeDetalhes>(0), mItemListener);
             mActionsListener = new FilmesPresenter(this);
             setHasOptionsMenu(true);
+
+            //apiCall();
+            //setupPresenter();
         }
 
     }
@@ -92,47 +85,18 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         mActionsListener.carregarFilmes(querySearch);
     }
 
+    /*private void setupPresenter() {
+        presenter = new FilmesPresenter(FilmesContract);
+        presenter.attachView(this);
+        presenter.subscribe();
+        presenter.updatePhotos(1);  //TODO: make this dynamic
+    }*/
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.filmes_fragment, container, false);
         RecyclerView recyclerView = root.findViewById(R.id.filmes_list);
-
-        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
-
-        rv.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage += 1;
-
-                // mocking network delay for API call
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadNextPage();
-                    }
-                }, 1000);
-            }
-
-            @Override
-            public int getTotalPageCount() {
-                return TOTAL_PAGES;
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        });
-
         if (mListAdapter != null) {
             recyclerView.setAdapter(mListAdapter);
         }
@@ -146,6 +110,23 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), numColumns));
 
+        firstVisibleInListview = layoutManager.findFirstVisibleItemPosition();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int currentFirstVisible = layoutManager.findFirstVisibleItemPosition();
+
+                if(currentFirstVisible > firstVisibleInListview)
+                    Log.i("RecyclerView scrolled: ", "scroll up!");
+                else
+                    Log.i("RecyclerView scrolled: ", "scroll down!");
+
+                firstVisibleInListview = currentFirstVisible;
+
+            }
+        });
+
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.SwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.colorPrimary),
@@ -157,62 +138,53 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         return root;
     }
 
-    private FilmeDetalhes fetchResults(Response<FilmeDetalhes> response) {
-        FilmeDetalhes topRatedMovies = response.body();
-        return topRatedMovies;
+    private RecyclerView.OnScrollListener recyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            int visibleItemCount = layoutManager.getChildCount();
+            int totalItemCount = layoutManager.getItemCount();
+            int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+            if (!isLoading && !isLastPage) {
+                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                        && firstVisibleItemPosition >= 0
+                        && totalItemCount >= PAGE_SIZE) {
+                    loadMoreItems();
+                }
+            }
+        }
+    };
+
+    private void loadMoreItems() {
+        isLoading = true;
+
+        currentPage += 1;
+        
+        //apiCall();
     }
 
-    private void loadFirstPage() {
-        Log.d(TAG, "loadFirstPage: ");
-
-        callTopRatedMoviesApi().enqueue(new Callback<FilmeDetalhes>() {
+    /*private void apiCall() {
+        final ArrayList<FilmeDetalhes> items = new ArrayList<>();
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onResponse(Call<FilmeDetalhes> call, Response<FilmeDetalhes> response) {
-                // Got data. Send it to adapter
+            public void run() {
+                for (int i = 0; i < 10; i++){
+                    itemCount++;
+                    FilmeDetalhes filmeDetalhes = new FilmeDetalhes();
+                    items.add(filmeDetalhes);
+                }
 
-                FilmeDetalhes results = fetchResults(response);
-                adapter.addAll((List<FilmeDetalhes>) results);
-
-                if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
-                else isLastPage = true;
-            }
-
-            @Override
-            public void onFailure(Call<FilmeDetalhes> call, Throwable t) {
-                t.printStackTrace();
-
-            }
-        });
-
-    }
-
-    private void loadNextPage() {
-        Log.d(TAG, "loadNextPage: " + currentPage);
-
-        callTopRatedMoviesApi().enqueue(new Callback<FilmeDetalhes>() {
-            @Override
-            public void onResponse(Call<FilmeDetalhes> call, Response<FilmeDetalhes> response) {
-                adapter.removeLoadingFooter();
-                isLoading = false;
-
-                FilmeDetalhes results = fetchResults(response);
-                adapter.addAll((List<FilmeDetalhes>) results);
-
-                if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
-                else isLastPage = true;
-            }
-
-            @Override
-            public void onFailure(Call<FilmeDetalhes> call, Throwable t) {
-                t.printStackTrace();
-                // TODO: 08/11/16 handle failure
+                if (currentPage != PAGE_START);
+                mListAdapter,addItems
             }
         });
-    }
-
-    private Call<FilmeDetalhes> callTopRatedMoviesApi() {
-        return movieService.busca2(BuildConfig.THE_MOVIE_DB_API_TOKEN, currentPage,"json");
-    }
+    }*/
 
     @Override
     public void setCarregando(final boolean isAtivo) {
@@ -248,6 +220,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         intent.putExtra("Runtime",filme.runtime);
         intent.putExtra("Language",filme.language);
         intent.putExtra("imdbRating",filme.imdbrating);
+
         getActivity().startActivity(intent);
 
     }
@@ -305,8 +278,6 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
             }else{
                 Intent intent = new Intent(getActivity().getBaseContext(), NenhumResultadoActivity.class);
                 startActivity(intent);
-
-                Snackbar.make(getView(),"Nenhum resultado", Snackbar.LENGTH_LONG);
             }
                 return 0;
         }

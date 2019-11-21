@@ -1,17 +1,10 @@
 package com.example.mvpandroid.data;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.Toast;
-
-import androidx.core.widget.NestedScrollView;
 
 import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.data.model.FilmeResultadoBusca;
-import com.example.mvpandroid.filmes.FilmesContract;
-import com.example.mvpandroid.filmes.NenhumResultadoActivity;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.snackbar.SnackbarContentLayout;
 
 import retrofit2.Call;
 import retrofit2.Callback;

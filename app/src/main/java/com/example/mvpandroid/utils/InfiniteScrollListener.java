@@ -23,7 +23,16 @@ public abstract class InfiniteScrollListener extends RecyclerView.OnScrollListen
 
     RecyclerView.LayoutManager mLayoutManager;
 
+    public InfiniteScrollListener(LinearLayoutManager layoutManager) {
+        this.mLayoutManager = layoutManager;
+    }
+
     public InfiniteScrollListener(GridLayoutManager layoutManager) {
+        this.mLayoutManager = layoutManager;
+        visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
+    }
+
+    public InfiniteScrollListener(StaggeredGridLayoutManager layoutManager) {
         this.mLayoutManager = layoutManager;
         visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
     }
