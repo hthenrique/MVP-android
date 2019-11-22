@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.example.mvpandroid.data.model.FilmeDetalhes;
 import com.example.mvpandroid.data.model.FilmeResultadoBusca;
+import com.example.mvpandroid.detalhes.DetalhesActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,7 +35,7 @@ public class FilmeServiceImpl implements FilmeServiceApi {
 
             @Override
             public void onFailure(Call<FilmeDetalhes> call, Throwable t) {
-                Toast.makeText(context, "Erro", Toast.LENGTH_SHORT).show();
+                Toast.makeText(new DetalhesActivity(), "Erro", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -51,13 +52,13 @@ public class FilmeServiceImpl implements FilmeServiceApi {
                         callback.onLoaded(resultadoBusca);
                     }
                 }catch (Exception e){
-                    Toast.makeText(context, "Nenhum Resultado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(new DetalhesActivity(), "Nenhum Resultado", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<FilmeResultadoBusca> call, Throwable t) {
-                Toast.makeText(context, "Erro", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Erro", Toast.LENGTH_SHORT).show();
             }
         });
     }

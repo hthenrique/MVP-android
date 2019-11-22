@@ -110,7 +110,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), numColumns));
 
-        firstVisibleInListview = layoutManager.findFirstVisibleItemPosition();
+        //firstVisibleInListview = layoutManager.findFirstVisibleItemPosition();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
