@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PaginationScrollListener extends RecyclerView.OnScrollListener {
+public abstract class PaginationScrollListener extends RecyclerView.OnScrollListener {
     LinearLayoutManager layoutManager;
 
     public PaginationScrollListener(LinearLayoutManager layoutManager){
@@ -28,18 +28,11 @@ public class PaginationScrollListener extends RecyclerView.OnScrollListener {
         }
     }
 
-    protected void loadMoreItems() {
-    }
+    protected abstract void loadMoreItems();
 
-    public int getTotalPageCount() {
-        return 0;
-    }
+    public abstract int getTotalPageCount();
 
-    public boolean isLastPage() {
-        return false;
-    }
+    public abstract boolean isLastPage();
 
-    public boolean isLoading() {
-        return false;
-    }
+    public abstract boolean isLoading();
 }

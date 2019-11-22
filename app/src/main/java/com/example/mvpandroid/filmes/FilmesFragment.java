@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.mvpandroid.BuildConfig;
 import com.example.mvpandroid.R;
 import com.example.mvpandroid.data.RetrofitEndpoint;
 import com.example.mvpandroid.data.model.FilmeDetalhes;
@@ -211,7 +210,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     }
 
     private Call<FilmeDetalhes> callTopRatedMoviesApi() {
-        return movieService.busca2(BuildConfig.THE_MOVIE_DB_API_TOKEN, currentPage,"json");
+        return movieService.busca2(currentPage,"json");
     }
 
     @Override
@@ -258,6 +257,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
 
         private List<FilmeDetalhes> mFilmes;
         private ItemListener mItemListener;
+        private boolean isLoadingAdded = false;
 
         public FilmesAdapter(List<FilmeDetalhes> filmes, ItemListener itemListener){
             setList(filmes);
@@ -300,7 +300,8 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         @Override
         public int getItemCount() {
             if (mFilmes != null){
-                return mFilmes.size();
+                //return mFilmes.size();
+                return mFilmes == null ? 0 : mFilmes.size();
 
             }else{
                 Intent intent = new Intent(getActivity().getBaseContext(), NenhumResultadoActivity.class);
