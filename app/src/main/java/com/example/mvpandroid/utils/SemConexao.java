@@ -1,17 +1,16 @@
 package com.example.mvpandroid.utils;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mvpandroid.R;
-import com.example.mvpandroid.filmes.FilmesActivity;
-import com.example.mvpandroid.filmes.NenhumResultadoActivity;
 
 public class SemConexao extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +23,13 @@ public class SemConexao extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        switch (item.getItemId()){
-            case android.R.id.home:
-                Intent intent = new Intent(SemConexao.this, FilmesActivity.class);
-                startActivity(intent);
-                finish();
+        if (item.getItemId() == android.R.id.home) {
+                if (NetworkUtil.getConnectivityStatus(this)) {
+                    onBackPressed();
+                } else {
+                    Toast.makeText(this, "Please verify your connection", Toast.LENGTH_SHORT).show();
+                }
+
         }
         return super.onOptionsItemSelected(item);
     }

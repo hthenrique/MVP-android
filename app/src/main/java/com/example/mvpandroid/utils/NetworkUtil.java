@@ -1,36 +1,20 @@
 package com.example.mvpandroid.utils;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-class NetworkUtil {
-    public static String getConnectivityStatusString(Context context){
-        Intent intent = new Intent(context, SemConexao.class);
-        context.startActivity(intent);
+public class NetworkUtil {
+    public static boolean getConnectivityStatus(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        String status = null;
-        ConnectivityManager cm = (ConnectivityManager)           context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork != null) {
-            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
-                status = "Wifi enabled";
-                return status;
-            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                status = "Mobile data enabled";
-                return status;
-            }
-        } else {
-            status = "No internet is available";
-            return status;
+        boolean isConnected = false;
+        if (connectivityManager != null){
+            NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+            isConnected = (activeNetwork != null) && (activeNetwork.isConnectedOrConnecting());
         }
-        return status;
-    }
-
-    public void activityConnection(Context context){
-        Intent intent = new Intent(context, SemConexao.class);
-        context.startActivity(intent);
+        return isConnected;
     }
 
 }

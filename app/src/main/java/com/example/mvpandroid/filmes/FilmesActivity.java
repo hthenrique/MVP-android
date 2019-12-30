@@ -1,7 +1,6 @@
 package com.example.mvpandroid.filmes;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -13,25 +12,30 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.mvpandroid.R;
 import com.example.mvpandroid.utils.MyReceiver;
+import com.example.mvpandroid.utils.NetworkUtil;
+
+import java.util.Objects;
 
 public class FilmesActivity extends AppCompatActivity {
 
     private FilmesFragment filmesFragment;
-    private Context context;
     private BroadcastReceiver MyReceiver = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.filmes_activity);
-        MyReceiver = new MyReceiver();
-        broadcastIntent();
+        if (NetworkUtil.getConnectivityStatus(Objects.requireNonNull(this))){
+            MyReceiver = new MyReceiver();
+            broadcastIntent();
+        }else{
+            MyReceiver = new MyReceiver();
+        }
 
         if (null == savedInstanceState){
             filmesFragment = new FilmesFragment();
             initFragment(FilmesFragment.newInstance());
         }
-
 
     }
 

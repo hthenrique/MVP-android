@@ -19,6 +19,5 @@ public class DetalhesPresenter implements DetalhesContract.Presenter {
     @Override
     public void carregarFilme(String imdbid) {
         mApi.getFilme(imdbid, mDetalhesView::exibirDetalhes);
-
     }
 }

@@ -1,8 +1,6 @@
 package com.example.mvpandroid.detalhes;
 
 import android.annotation.SuppressLint;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.mvpandroid.R;
@@ -38,7 +34,6 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
     private TextView filme_linguagem;
     private ImageView filme_poster;
     private RatingBar ratingBar;
-    private View filme_nome;
 
     public DetalhesFragment(){
     }
@@ -115,8 +110,7 @@ public class DetalhesFragment extends Fragment implements DetalhesContract.View 
 
     @Override
     public void exibirDetalhes(FilmeDetalhes filmeDetalhes) {
-        ((DetalhesActivity) getActivity())
-                .setActionBarTitle(filmeDetalhes.title);
+        ((DetalhesActivity) getActivity()).setActionBarTitle(filmeDetalhes.title);
 
         filme_titulo.setText(filmeDetalhes.title);
         filme_ano.setText(filmeDetalhes.year);

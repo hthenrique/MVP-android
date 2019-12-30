@@ -9,7 +9,7 @@ import java.util.List;
 public interface FilmesContract {
 
     interface View {
-        void setCarregando(boolean isAtivo);
+        boolean setCarregando(boolean isAtivo);
 
         void exibirFilmes(List<FilmeDetalhes> filmes);
 

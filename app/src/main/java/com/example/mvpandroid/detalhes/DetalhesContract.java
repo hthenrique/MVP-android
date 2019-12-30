@@ -11,7 +11,4 @@ public class DetalhesContract {
     interface Presenter{
         void carregarFilme(String imdbid);
     }
-
-    interface UserActionsListener {
-    }
 }

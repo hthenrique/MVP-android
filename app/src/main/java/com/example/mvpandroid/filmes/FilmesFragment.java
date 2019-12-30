@@ -102,7 +102,6 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         }
 
         Toolbar mToolbar = root.findViewById(R.id.main_toolbar);
-
         ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
 
         int numColumns = 1;
@@ -111,7 +110,7 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), numColumns));
 
         //firstVisibleInListview = layoutManager.findFirstVisibleItemPosition();
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        /*recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -125,13 +124,13 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
                 firstVisibleInListview = currentFirstVisible;
 
             }
-        });
+        });*/
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.SwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(
-                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
                 ContextCompat.getColor(getActivity(), R.color.colorAccent),
-                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+                ContextCompat.getColor(getActivity(), R.color.colorAccent),
+                ContextCompat.getColor(getActivity(), R.color.colorAccent));
 
         swipeRefreshLayout.setOnRefreshListener(() -> mActionsListener.carregarFilmes(querySearch));
 
@@ -187,13 +186,14 @@ public class FilmesFragment extends Fragment implements FilmesContract.View {
     }*/
 
     @Override
-    public void setCarregando(final boolean isAtivo) {
+    public boolean setCarregando(final boolean isAtivo) {
         if (getView() == null){
-            return;
+            return isAtivo;
         }
         final  SwipeRefreshLayout srl = getView().findViewById(R.id.SwipeRefresh);
 
         srl.post(() -> srl.setRefreshing(isAtivo));
+        return isAtivo;
     }
 
     @Override
